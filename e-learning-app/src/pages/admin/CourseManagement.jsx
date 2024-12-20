@@ -71,7 +71,12 @@ const CourseManagement = () => {
 
     try {
       if (isEditing) {
-        await api.updateCourse(courseData.maKhoaHoc, courseData);
+        const _courseData = {
+          ...courseData,
+          "maDanhMucKhoaHoc": courseData.danhMucKhoaHoc.maDanhMucKhoahoc,
+          "taiKhoanNguoiTao": courseData.nguoiTao.taiKhoan,
+        }
+        await api.updateCourse(courseData.maKhoaHoc, _courseData);
         showAlert("success", "Course updated successfully!");
       } else {
         await api.addCourse(courseData);

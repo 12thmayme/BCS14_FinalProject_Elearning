@@ -68,7 +68,10 @@ const UserManagement = () => {
   // Open modal for adding or editing a user
   const openModal = (user = null) => {
     if (user) {
-      setUserData(user);
+      setUserData((preValue) => ({
+        ...preValue,
+        ...user,
+      }));
       setIsEditing(true);
     } else {
       resetForm();
@@ -85,7 +88,7 @@ const UserManagement = () => {
 
   // Add or update a user
   const handleAddOrUpdateUser = async () => {
-    if (!userData.taiKhoan || !userData.email || !userData.matKhau) {
+    if (!userData.taiKhoan || !userData.email) {
       showAlert("warning", "Please fill out all required fields.");
       return;
     }
@@ -95,7 +98,11 @@ const UserManagement = () => {
         await api.updateUser(userData);
         showAlert("success", "User updated successfully!");
       } else {
-        await api.addUser(userData);
+        console.log({userData})
+        await api.addUser({
+          ...userData,
+          maLoaiNguoiDung: userData.maLoaiNguoiDung || "HV",
+        });
         showAlert("success", "User added successfully!");
       }
       closeModal();
