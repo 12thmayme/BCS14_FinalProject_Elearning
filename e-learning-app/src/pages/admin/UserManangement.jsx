@@ -4,13 +4,15 @@ import Alert from "../../components/Alert";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]); 
+  const [searchTerm, setSearchTerm] = useState("");
   const [userData, setUserData] = useState({
     taiKhoan: "",
     hoTen: "",
     email: "",
     soDt: "",
     matKhau: "",
-    maLoaiNguoiDung: "HV",
+    maLoaiNguoiDung: "",
     maNhom: "GP01",
   });
   const [isEditing, setIsEditing] = useState(false);
@@ -27,6 +29,7 @@ const UserManagement = () => {
     try {
       const response = await api.getUserList();
       setUsers(response.data);
+      setFilteredUsers(response.data); // Initialize filtered users
     } catch (error) {
       console.error("Error fetching users:", error);
       showAlert("error", "Failed to fetch users.");
@@ -37,6 +40,23 @@ const UserManagement = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
+  };
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    if (value === "") {
+      setFilteredUsers(users); // Reset if search is cleared
+    } else {
+      const filtered = users.filter(
+        (user) =>
+          user.taiKhoan.toLowerCase().includes(value.toLowerCase()) ||
+          user.hoTen.toLowerCase().includes(value.toLowerCase()) ||
+          user.email.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredUsers(filtered);
+    }
   };
 
   // Show alert
@@ -69,9 +89,7 @@ const UserManagement = () => {
       showAlert("warning", "Please fill out all required fields.");
       return;
     }
-  
-    console.log("Payload:", userData); // Debugging payload
-  
+
     try {
       if (isEditing) {
         await api.updateUser(userData);
@@ -87,7 +105,6 @@ const UserManagement = () => {
       showAlert("error", "Failed to save user.");
     }
   };
-  
 
   // Delete user
   const handleDeleteUser = async (taiKhoan) => {
@@ -111,7 +128,7 @@ const UserManagement = () => {
       email: "",
       soDt: "",
       matKhau: "",
-      maLoaiNguoiDung: "HV",
+      maLoaiNguoiDung: "",
       maNhom: "GP01",
     });
   };
@@ -132,6 +149,15 @@ const UserManagement = () => {
           <h2 className="text-3xl font-bold mb-8 text-center">
             User Management
           </h2>
+
+          {/* Search Input */}
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="Search by Account, Name, or Email"
+            className="mb-4 w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-400"
+          />
 
           {/* Add User Button */}
           <button
@@ -168,7 +194,7 @@ const UserManagement = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {users.map((user) => (
+                  {filteredUsers.map((user) => (
                     <tr
                       key={user.taiKhoan}
                       className="border-b border-gray-300"
