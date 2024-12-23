@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { api } from "../../api/api";
 import Alert from "../../components/Alert";
+import { useNavigate } from "react-router-dom";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]); 
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [userData, setUserData] = useState({
     taiKhoan: "",
@@ -93,12 +94,25 @@ const UserManagement = () => {
       return;
     }
 
+    // Check for duplicate user before adding
+    if (!isEditing) {
+      const isDuplicate = users.some(
+        (user) =>
+          user.taiKhoan.toLowerCase() === userData.taiKhoan.toLowerCase() ||
+          user.email.toLowerCase() === userData.email.toLowerCase()
+      );
+      if (isDuplicate) {
+        showAlert("warning", "User with this account or email already exists.");
+        return;
+      }
+    }
+
     try {
       if (isEditing) {
         await api.updateUser(userData);
         showAlert("success", "User updated successfully!");
       } else {
-        console.log({userData})
+        console.log({ userData });
         await api.addUser({
           ...userData,
           maLoaiNguoiDung: userData.maLoaiNguoiDung || "HV",
@@ -108,7 +122,10 @@ const UserManagement = () => {
       closeModal();
       loadUsers();
     } catch (error) {
-      console.error("Error saving user:", error.response?.data || error.message);
+      console.error(
+        "Error saving user:",
+        error.response?.data || error.message
+      );
       showAlert("error", "Failed to save user.");
     }
   };
@@ -139,6 +156,8 @@ const UserManagement = () => {
       maNhom: "GP01",
     });
   };
+
+  const navigate = useNavigate();
 
   return (
     <div className="container mx-auto px-4">
@@ -231,6 +250,15 @@ const UserManagement = () => {
                         >
                           Delete
                         </button>
+                        <button
+                          onClick={() =>
+                            navigate(`/user-enrollments/${user.taiKhoan}`)
+                          }
+                          className="px-2 py-1 text-white bg-orange-500 hover:bg-orange-600 rounded shadow"
+                        >
+                          View Enrollments
+                        </button>
+                        ;
                       </td>
                     </tr>
                   ))}

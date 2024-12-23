@@ -18,5 +18,21 @@ export const api = {
     deleteCourse: (courseId) => apiInstance.delete(`/QuanLyKhoaHoc/XoaKhoaHoc?maKhoaHoc=${courseId}`),
 
     // Enrollment Management
-    getEnrollments: () => apiInstance.get("/QuanLyKhoaHoc/LayDanhSachGhiDanh?MaNhom=GP01"),
+    getCoursesNotEnrolled: (userId) =>
+        apiInstance.post("/QuanLyNguoiDung/LayDanhSachKhoaHocChuaGhiDanh", { taiKhoan: userId }),
+
+    getCoursesPendingApproval: (userId) =>
+        apiInstance.post("/QuanLyNguoiDung/LayDanhSachKhoaHocChoXetDuyet", { taiKhoan: userId }),
+
+    getCoursesApproved: (userId) =>
+        apiInstance.post("/QuanLyNguoiDung/LayDanhSachKhoaHocDaXetDuyet", { taiKhoan: userId }),
+
+    getUsersNotEnrolled: (courseId) =>
+        apiInstance.post("/QuanLyNguoiDung/LayDanhSachNguoiDungChuaGhiDanh", { maKhoaHoc: courseId }),
+
+    getStudentsPendingApproval: (courseId) =>
+        apiInstance.post("/QuanLyNguoiDung/LayDanhSachHocVienChoXetDuyet", { maKhoaHoc: courseId }),
+
+    getStudentsInCourse: (courseId) =>
+        apiInstance.post("/QuanLyNguoiDung/LayDanhSachHocVienKhoaHoc", { maKhoaHoc: courseId }),
 };

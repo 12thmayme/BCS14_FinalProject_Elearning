@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import UserManagement from "./UserManangement";
 import CourseManagement from "./CourseManagement";
-import EnrollmentManagement from "./EnrollmentMangement";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("users"); // Default tab
@@ -12,8 +11,6 @@ const AdminDashboard = () => {
         return <UserManagement />;
       case "courses":
         return <CourseManagement />;
-      case "enrollment":
-        return <EnrollmentManagement />;
       default:
         return <UserManagement />;
     }
@@ -62,18 +59,7 @@ const AdminDashboard = () => {
               Course Management
             </button>
           </li>
-          <li>
-            <button
-              onClick={() => setActiveTab("enrollment")}
-              className={`px-4 py-2 rounded ${
-                activeTab === "enrollment"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 text-gray-700 hover:bg-blue-400 hover:text-white"
-              }`}
-            >
-              Enrollment Management
-            </button>
-          </li>
+       
         </ul>
       </nav>
 

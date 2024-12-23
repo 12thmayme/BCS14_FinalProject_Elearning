@@ -5,33 +5,45 @@ import UserManagement from "./pages/admin/UserManangement";
 import Auth from "./components/Auth";
 import ProtectedRoute from "./components/ProtectedRoute"; // For authenticated routes
 import AdminDashboard from "./pages/admin/AdminDashBoard";
-
+import UserEnrollmentManagement from "./pages/admin/UserEnrollmentManagement";
+import CourseEnrollmentManagement from "./pages/admin/CourseEnrollmentManagement";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Manage authentication state
 
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<Auth />} />
+        {/* Auth Routes */}
+        <Route path="/login" element={<Auth setIsAuthenticated={setIsAuthenticated} />} />
         <Route path="/register" element={<Auth isRegister />} />
-        <Route path="/AdminDashboard" element={<AdminDashboard />} />
-        {/* Protected Admin Routes */}
+
+        {/* Admin Dashboard */}
         <Route
-          path="/course-management"
-          element={
-            <ProtectedRoute>
-              <CourseManagement />
-            </ProtectedRoute>
-          }
+          path="/AdminDashboard"
+          element={<ProtectedRoute isAuthenticated={isAuthenticated}><AdminDashboard /></ProtectedRoute>}
         />
+
+        {/* User Management */}
         <Route
           path="/user-management"
-          element={
-            <ProtectedRoute>
-              <UserManagement />
-            </ProtectedRoute>
-          }
+          element={<ProtectedRoute isAuthenticated={isAuthenticated}><UserManagement /></ProtectedRoute>}
+        />
+
+        {/* Course Management */}
+        <Route
+          path="/course-management"
+          element={<ProtectedRoute isAuthenticated={isAuthenticated}><CourseManagement /></ProtectedRoute>}
+        />
+
+        {/* Enrollment Management */}
+        <Route
+          path="/user-enrollments/:userId"
+          element={<ProtectedRoute isAuthenticated={isAuthenticated}><UserEnrollmentManagement /></ProtectedRoute>}
+        />
+        <Route
+          path="/course-enrollments/:courseId"
+          element={<ProtectedRoute isAuthenticated={isAuthenticated}><CourseEnrollmentManagement /></ProtectedRoute>}
         />
 
         {/* Default Route */}

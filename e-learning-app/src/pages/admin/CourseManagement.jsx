@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { api } from "../../api/api";
 import Alert from "../../components/Alert";
+import { useNavigate } from "react-router-dom";
 
 const CourseManagement = () => {
   const [courses, setCourses] = useState([]);
+  const [filteredCourses, setFilteredCourses] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [courseData, setCourseData] = useState({
     maKhoaHoc: "",
     tenKhoaHoc: "",
@@ -26,6 +29,7 @@ const CourseManagement = () => {
     try {
       const response = await api.getCourseList();
       setCourses(response.data);
+      setFilteredCourses(response.data);
     } catch (error) {
       console.error("Error fetching courses:", error);
       showAlert("error", "Failed to fetch courses.");
@@ -36,6 +40,19 @@ const CourseManagement = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCourseData({ ...courseData, [name]: value });
+  };
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+
+    const filtered = courses.filter(
+      (course) =>
+        course.maKhoaHoc.toLowerCase().includes(value.toLowerCase()) ||
+        course.tenKhoaHoc.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredCourses(filtered);
   };
 
   // Show alert
@@ -69,14 +86,18 @@ const CourseManagement = () => {
       return;
     }
 
+    // Check for duplicate Course ID
+    if (
+      !isEditing &&
+      courses.some((course) => course.maKhoaHoc === courseData.maKhoaHoc)
+    ) {
+      showAlert("warning", "Course ID already exists. Please use a unique ID.");
+      return;
+    }
+
     try {
       if (isEditing) {
-        const _courseData = {
-          ...courseData,
-          "maDanhMucKhoaHoc": courseData.danhMucKhoaHoc.maDanhMucKhoahoc,
-          "taiKhoanNguoiTao": courseData.nguoiTao.taiKhoan,
-        }
-        await api.updateCourse(courseData.maKhoaHoc, _courseData);
+        await api.updateCourse(courseData.maKhoaHoc, courseData);
         showAlert("success", "Course updated successfully!");
       } else {
         await api.addCourse(courseData);
@@ -85,7 +106,10 @@ const CourseManagement = () => {
       closeModal();
       loadCourses();
     } catch (error) {
-      console.error("Error saving course:", error.response?.data || error.message);
+      console.error(
+        "Error saving course:",
+        error.response?.data || error.message
+      );
       showAlert("error", "Failed to save course.");
     }
   };
@@ -117,6 +141,8 @@ const CourseManagement = () => {
     });
   };
 
+  const navigate = useNavigate();
+
   return (
     <div className="container mx-auto px-4">
       {/* Alert */}
@@ -133,6 +159,15 @@ const CourseManagement = () => {
           <h2 className="text-3xl font-bold mb-8 text-center">
             Course Management
           </h2>
+
+          {/* Search Input */}
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="Search by Id or Name"
+            className="mb-4 w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-400"
+          />
 
           {/* Add Course Button */}
           <button
@@ -166,7 +201,7 @@ const CourseManagement = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {courses.map((course) => (
+                  {filteredCourses.map((course) => (
                     <tr
                       key={course.maKhoaHoc}
                       className="border-b border-gray-300"
@@ -192,6 +227,14 @@ const CourseManagement = () => {
                           className="px-2 py-1 text-white bg-red-500 hover:bg-red-600 rounded shadow"
                         >
                           Delete
+                        </button>
+                        <button
+                          onClick={() =>
+                            navigate(`/course-enrollments/${course.maKhoaHoc}`)
+                          }
+                          className="px-2 py-1 text-white bg-orange-500 hover:bg-orange-600 rounded shadow"
+                        >
+                          View Enrollments
                         </button>
                       </td>
                     </tr>
@@ -235,7 +278,7 @@ const CourseManagement = () => {
                 className="border border-gray-300 rounded px-4 py-2 col-span-2"
               />
             </div>
-            <div className="mt-4 flex justify-end space-x-4">
+            <div className="mt-3 flex justify-end space-x-4">
               <button
                 onClick={handleAddOrUpdateCourse}
                 className="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600"
@@ -248,6 +291,7 @@ const CourseManagement = () => {
               >
                 Cancel
               </button>
+      
             </div>
           </div>
         </div>
