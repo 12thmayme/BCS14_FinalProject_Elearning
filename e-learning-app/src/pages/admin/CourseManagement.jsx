@@ -182,20 +182,23 @@ const CourseManagement = () => {
             <h3 className="text-lg font-semibold mb-4 text-gray-700">
               Course List
             </h3>
-            <div className="overflow-x-auto">
+            <div
+              className="overflow-y-auto"
+              style={{ maxHeight: "400px" }} // Limit height for scrolling
+            >
               <table className="table-fixed w-full border-collapse border border-gray-300">
                 <thead>
-                  <tr className="bg-gray-100 border-b border-gray-300">
-                    <th className="w-1/5 px-4 py-2 text-center text-sm font-medium text-gray-600">
+                  <tr className="bg-gray-100 border-b border-gray-300 ">
+                    <th className="w-1/5 px-2 py-2 text-start text-sm font-bold text-gray-600">
                       ID
                     </th>
-                    <th className="w-1/5 px-4 py-2 text-center text-sm font-medium text-gray-600">
+                    <th className="w-1/5 px-2 py-2 text-start text-sm font-bold text-gray-600">
                       Name
                     </th>
-                    <th className="w-2/5 px-4 py-2 text-center text-sm font-medium text-gray-600">
+                    <th className="w-2/5 px-2 py-2 text-start text-sm font-bold text-gray-600">
                       Description
                     </th>
-                    <th className="w-1/5 px-4 py-2 text-center text-sm font-medium text-gray-600">
+                    <th className="w-1/5 px-2 py-2 text-center text-sm font-bold text-gray-600">
                       Actions
                     </th>
                   </tr>
@@ -212,29 +215,40 @@ const CourseManagement = () => {
                       <td className="px-2 py-2 text-sm text-gray-700">
                         {course.tenKhoaHoc}
                       </td>
-                      <td className="px-2 py-2 text-sm text-gray-700">
+                      <td
+                        className="px-2 py-2 text-sm text-gray-700 overflow-hidden whitespace-nowrap text-ellipsis"
+                        style={{ maxWidth: "200px" }}
+                      >
                         {course.moTa}
                       </td>
-                      <td className="px-2 py-2 text-sm text-gray-700 flex justify-center space-x-2">
+                      <td className="px-2 py-2 text-sm text-gray-700 flex justify-center space-x-4">
+                        {/* Edit Button */}
                         <button
-                          onClick={() => openModal(course)}
-                          className="px-2 py-1 text-white bg-yellow-500 hover:bg-yellow-600 rounded shadow"
+                          onClick={() => openModal()}
+                          className="p-2 text-white bg-yellow-500 hover:bg-yellow-600 rounded shadow"
+                          style={{ zIndex: 10 }}
                         >
-                          Edit
+                          <i className="fas fa-edit"></i>
                         </button>
+
+                        {/* Delete Button */}
                         <button
                           onClick={() => handleDeleteCourse(course.maKhoaHoc)}
-                          className="px-2 py-1 text-white bg-red-500 hover:bg-red-600 rounded shadow"
+                          className="p-2 text-white bg-red-500 hover:bg-red-600 rounded shadow"
+                          style={{ zIndex: 10 }}
                         >
-                          Delete
+                          <i className="fas fa-trash"></i>
                         </button>
+
+                        {/* View Enrollments Button */}
                         <button
                           onClick={() =>
                             navigate(`/course-enrollments/${course.maKhoaHoc}`)
                           }
-                          className="px-2 py-1 text-white bg-orange-500 hover:bg-orange-600 rounded shadow"
+                          className="p-2 text-white bg-orange-500 hover:bg-orange-600 rounded shadow"
+                          style={{ zIndex: 10 }}
                         >
-                          View Enrollments
+                          <i className="fas fa-users"></i>
                         </button>
                       </td>
                     </tr>
@@ -245,57 +259,6 @@ const CourseManagement = () => {
           </div>
         </main>
       </div>
-
-      {/* Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded shadow-lg w-1/2">
-            <h3 className="text-xl font-semibold mb-4">
-              {isEditing ? "Edit Course" : "Add Course"}
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                name="maKhoaHoc"
-                value={courseData.maKhoaHoc}
-                onChange={handleInputChange}
-                placeholder="Course ID"
-                className="border border-gray-300 rounded px-4 py-2"
-              />
-              <input
-                type="text"
-                name="tenKhoaHoc"
-                value={courseData.tenKhoaHoc}
-                onChange={handleInputChange}
-                placeholder="Course Name"
-                className="border border-gray-300 rounded px-4 py-2"
-              />
-              <textarea
-                name="moTa"
-                value={courseData.moTa}
-                onChange={handleInputChange}
-                placeholder="Description"
-                className="border border-gray-300 rounded px-4 py-2 col-span-2"
-              />
-            </div>
-            <div className="mt-3 flex justify-end space-x-4">
-              <button
-                onClick={handleAddOrUpdateCourse}
-                className="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600"
-              >
-                Save
-              </button>
-              <button
-                onClick={closeModal}
-                className="px-4 py-2 bg-gray-500 text-white rounded shadow hover:bg-gray-600"
-              >
-                Cancel
-              </button>
-      
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

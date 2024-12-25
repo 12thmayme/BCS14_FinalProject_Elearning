@@ -27,12 +27,27 @@ export const api = {
     getCoursesApproved: (userId) =>
         apiInstance.post("/QuanLyNguoiDung/LayDanhSachKhoaHocDaXetDuyet", { taiKhoan: userId }),
 
-    getUsersNotEnrolled: (courseId) =>
-        apiInstance.post("/QuanLyNguoiDung/LayDanhSachNguoiDungChuaGhiDanh", { maKhoaHoc: courseId }),
-
     getStudentsPendingApproval: (courseId) =>
         apiInstance.post("/QuanLyNguoiDung/LayDanhSachHocVienChoXetDuyet", { maKhoaHoc: courseId }),
 
-    getStudentsInCourse: (courseId) =>
-        apiInstance.post("/QuanLyNguoiDung/LayDanhSachHocVienKhoaHoc", { maKhoaHoc: courseId }),
+    // Get Enrolled Users
+    getStudentsInCourse: (courseId) => {
+        return apiInstance.post("/QuanLyNguoiDung/LayDanhSachHocVienKhoaHoc", { maKhoaHoc: courseId });
+    },
+
+    // Get Unenrolled Users
+    getUsersNotEnrolled: (courseId) => {
+        return apiInstance.post("/QuanLyNguoiDung/LayDanhSachNguoiDungChuaGhiDanh", { maKhoaHoc: courseId });
+    },
+
+    // Enroll User
+    enroll: (data) => {
+        return apiInstance.post("/QuanLyKhoaHoc/GhiDanhKhoaHoc", data);
+    },
+
+    // Unenroll User
+    unenroll: (data) => {
+        return apiInstance.post("/QuanLyKhoaHoc/HuyGhiDanh", data);
+    },
+
 };

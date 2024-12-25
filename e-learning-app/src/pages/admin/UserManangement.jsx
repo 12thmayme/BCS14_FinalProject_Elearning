@@ -198,7 +198,7 @@ const UserManagement = () => {
             <h3 className="text-lg font-semibold mb-4 text-gray-700">
               User List
             </h3>
-            <div className="overflow-x-auto">
+            <div className="overflow-y-auto">
               <table className="table-fixed w-full border-collapse border border-gray-300">
                 <thead>
                   <tr className="bg-gray-100 border-b border-gray-300">
@@ -258,7 +258,6 @@ const UserManagement = () => {
                         >
                           View Enrollments
                         </button>
-                        ;
                       </td>
                     </tr>
                   ))}

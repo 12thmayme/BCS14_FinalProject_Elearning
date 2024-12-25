@@ -7,6 +7,8 @@ import ProtectedRoute from "./components/ProtectedRoute"; // For authenticated r
 import AdminDashboard from "./pages/admin/AdminDashBoard";
 import UserEnrollmentManagement from "./pages/admin/UserEnrollmentManagement";
 import CourseEnrollmentManagement from "./pages/admin/CourseEnrollmentManagement";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Manage authentication state
@@ -45,9 +47,6 @@ function App() {
           path="/course-enrollments/:courseId"
           element={<ProtectedRoute isAuthenticated={isAuthenticated}><CourseEnrollmentManagement /></ProtectedRoute>}
         />
-
-        {/* Default Route */}
-        <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </Router>
   );
