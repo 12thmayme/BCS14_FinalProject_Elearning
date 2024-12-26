@@ -43,7 +43,7 @@ const Auth = () => {
       showAlert("success", "Login successful!");
 
       // Redirect to Admin Dashboard
-      navigate("/AdminDashboard");
+      navigate("/admin");
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
       showAlert("error", error.response?.data?.message || "Login failed.");

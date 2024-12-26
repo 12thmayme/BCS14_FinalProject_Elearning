@@ -20,11 +20,12 @@ const CourseManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [alert, setAlert] = useState({ type: "", message: "", show: false });
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     loadCourses();
   }, []);
 
-  // Fetch course list from API
   const loadCourses = async () => {
     try {
       const response = await api.getCourseList();
@@ -32,21 +33,18 @@ const CourseManagement = () => {
       setFilteredCourses(response.data);
     } catch (error) {
       console.error("Error fetching courses:", error);
-      showAlert("error", "Failed to fetch courses.");
+      showAlert("error", "Failed to fetch courses. Please try again later.");
     }
   };
 
-  // Handle input changes in the modal form
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCourseData({ ...courseData, [name]: value });
   };
 
-  // Handle search input change
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-
     const filtered = courses.filter(
       (course) =>
         course.maKhoaHoc.toLowerCase().includes(value.toLowerCase()) ||
@@ -55,13 +53,11 @@ const CourseManagement = () => {
     setFilteredCourses(filtered);
   };
 
-  // Show alert
   const showAlert = (type, message) => {
     setAlert({ type, message, show: true });
     setTimeout(() => setAlert({ ...alert, show: false }), 3000);
   };
 
-  // Open modal for adding or editing a course
   const openModal = (course = null) => {
     if (course) {
       setCourseData(course);
@@ -73,20 +69,17 @@ const CourseManagement = () => {
     setIsModalOpen(true);
   };
 
-  // Close modal
   const closeModal = () => {
     setIsModalOpen(false);
     resetForm();
   };
 
-  // Add or update a course
   const handleAddOrUpdateCourse = async () => {
     if (!courseData.maKhoaHoc || !courseData.tenKhoaHoc || !courseData.moTa) {
       showAlert("warning", "Please fill out all required fields.");
       return;
     }
 
-    // Check for duplicate Course ID
     if (
       !isEditing &&
       courses.some((course) => course.maKhoaHoc === courseData.maKhoaHoc)
@@ -110,11 +103,10 @@ const CourseManagement = () => {
         "Error saving course:",
         error.response?.data || error.message
       );
-      showAlert("error", "Failed to save course.");
+      showAlert("error", "Failed to save course. Please try again.");
     }
   };
 
-  // Delete course
   const handleDeleteCourse = async (maKhoaHoc) => {
     if (window.confirm("Are you sure you want to delete this course?")) {
       try {
@@ -123,12 +115,11 @@ const CourseManagement = () => {
         loadCourses();
       } catch (error) {
         console.error("Error deleting course:", error);
-        showAlert("error", "Failed to delete course.");
+        showAlert("error", "Failed to delete course. Please try again.");
       }
     }
   };
 
-  // Reset form
   const resetForm = () => {
     setCourseData({
       maKhoaHoc: "",
@@ -141,11 +132,8 @@ const CourseManagement = () => {
     });
   };
 
-  const navigate = useNavigate();
-
   return (
     <div className="container mx-auto px-4">
-      {/* Alert */}
       {alert.show && (
         <Alert
           type={alert.type}
@@ -160,16 +148,14 @@ const CourseManagement = () => {
             Course Management
           </h2>
 
-          {/* Search Input */}
           <input
             type="text"
             value={searchTerm}
             onChange={handleSearchChange}
-            placeholder="Search by Id or Name"
+            placeholder="Search by ID or Name"
             className="mb-4 w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-400"
           />
 
-          {/* Add Course Button */}
           <button
             onClick={() => openModal()}
             className="mb-4 px-6 py-2 text-white font-semibold bg-blue-500 hover:bg-blue-600 rounded shadow"
@@ -177,28 +163,24 @@ const CourseManagement = () => {
             Add Course
           </button>
 
-          {/* Course List */}
           <div className="bg-white p-4 rounded shadow-lg">
             <h3 className="text-lg font-semibold mb-4 text-gray-700">
               Course List
             </h3>
-            <div
-              className="overflow-y-auto"
-              style={{ maxHeight: "400px" }} // Limit height for scrolling
-            >
+            <div className="overflow-y-auto" style={{ maxHeight: "400px" }}>
               <table className="table-fixed w-full border-collapse border border-gray-300">
                 <thead>
-                  <tr className="bg-gray-100 border-b border-gray-300 ">
-                    <th className="w-1/5 px-2 py-2 text-start text-sm font-bold text-gray-600">
+                  <tr className="bg-gray-100 border-b border-gray-300">
+                    <th className="px-4 py-2 text-start font-medium text-gray-600">
                       ID
                     </th>
-                    <th className="w-1/5 px-2 py-2 text-start text-sm font-bold text-gray-600">
+                    <th className="px-4 py-2 text-start font-medium text-gray-600">
                       Name
                     </th>
-                    <th className="w-2/5 px-2 py-2 text-start text-sm font-bold text-gray-600">
+                    <th className="px-4 py-2 text-start font-medium text-gray-600">
                       Description
                     </th>
-                    <th className="w-1/5 px-2 py-2 text-center text-sm font-bold text-gray-600">
+                    <th className="px-4 py-2 text-start font-medium text-gray-600">
                       Actions
                     </th>
                   </tr>
@@ -209,44 +191,35 @@ const CourseManagement = () => {
                       key={course.maKhoaHoc}
                       className="border-b border-gray-300"
                     >
-                      <td className="px-2 py-2 text-sm text-gray-700">
+                      <td className="px-4 py-2 text-sm text-gray-700">
                         {course.maKhoaHoc}
                       </td>
-                      <td className="px-2 py-2 text-sm text-gray-700">
+                      <td className="px-4 py-2 text-sm text-gray-700">
                         {course.tenKhoaHoc}
                       </td>
-                      <td
-                        className="px-2 py-2 text-sm text-gray-700 overflow-hidden whitespace-nowrap text-ellipsis"
-                        style={{ maxWidth: "200px" }}
-                      >
+                      <td className="px-4 py-2 text-sm text-gray-700">
                         {course.moTa}
                       </td>
-                      <td className="px-2 py-2 text-sm text-gray-700 flex justify-center space-x-4">
-                        {/* Edit Button */}
+                      <td className="px-4 py-2 text-sm text-gray-700 flex space-x-2">
                         <button
-                          onClick={() => openModal()}
-                          className="p-2 text-white bg-yellow-500 hover:bg-yellow-600 rounded shadow"
-                          style={{ zIndex: 10 }}
+                          onClick={() => openModal(course)}
+                          className="px-2 py-1 text-white bg-yellow-500 hover:bg-yellow-600 rounded shadow"
                         >
                           <i className="fas fa-edit"></i>
                         </button>
-
-                        {/* Delete Button */}
                         <button
                           onClick={() => handleDeleteCourse(course.maKhoaHoc)}
-                          className="p-2 text-white bg-red-500 hover:bg-red-600 rounded shadow"
-                          style={{ zIndex: 10 }}
+                          className="px-2 py-1 bg-red-500 text-white rounded shadow hover:bg-red-600"
                         >
                           <i className="fas fa-trash"></i>
                         </button>
-
-                        {/* View Enrollments Button */}
                         <button
                           onClick={() =>
-                            navigate(`/course-enrollments/${course.maKhoaHoc}`)
+                            navigate(
+                              `/admin/course-enrollments/${course.maKhoaHoc}`
+                            )
                           }
-                          className="p-2 text-white bg-orange-500 hover:bg-orange-600 rounded shadow"
-                          style={{ zIndex: 10 }}
+                          className="px-2 py-1 bg-orange-500 text-white rounded shadow hover:bg-orange-600"
                         >
                           <i className="fas fa-users"></i>
                         </button>
@@ -259,6 +232,62 @@ const CourseManagement = () => {
           </div>
         </main>
       </div>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded shadow-lg w-1/2">
+            <h3 className="text-xl font-semibold mb-4">
+              {isEditing ? "Edit Course" : "Add Course"}
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                name="maKhoaHoc"
+                value={courseData.maKhoaHoc}
+                onChange={handleInputChange}
+                placeholder="Course ID"
+                className="border px-4 py-2 rounded"
+              />
+              <input
+                type="text"
+                name="tenKhoaHoc"
+                value={courseData.tenKhoaHoc}
+                onChange={handleInputChange}
+                placeholder="Course Name"
+                className="border px-4 py-2 rounded"
+              />
+              <textarea
+                name="moTa"
+                value={courseData.moTa}
+                onChange={handleInputChange}
+                placeholder="Description"
+                className="border px-4 py-2 rounded"
+              />
+              <input
+                type="date"
+                name="ngayTao"
+                value={courseData.ngayTao}
+                onChange={handleInputChange}
+                className="border px-4 py-2 rounded"
+              />
+            </div>
+            <div className="flex justify-end mt-4 space-x-2">
+              <button
+                onClick={handleAddOrUpdateCourse}
+                className="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600"
+              >
+                Save
+              </button>
+              <button
+                onClick={closeModal}
+                className="px-4 py-2 bg-gray-500 text-white rounded shadow hover:bg-gray-600"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

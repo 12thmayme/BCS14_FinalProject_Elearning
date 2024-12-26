@@ -1,65 +1,64 @@
-import React, { useState } from "react";
-import UserManagement from "./UserManangement";
-import CourseManagement from "./CourseManagement";
+import React from "react";
 
 const AdminDashboard = () => {
-  const [activeTab, setActiveTab] = useState("users"); // Default tab
-
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case "users":
-        return <UserManagement />;
-      case "courses":
-        return <CourseManagement />;
-      default:
-        return <UserManagement />;
-    }
-  };
-
+  
   return (
-    <div className="min-h-screen flex">
-      {/* Sidebar */}
-      <aside className="w-1/10 bg-gray-200 p-6 shadow-md">
-        <h2 className="text-xl font-bold mb-6">Admin Dashboard</h2>
-        <ul className="space-y-4">
-          <li>
-            <button
-              onClick={() => setActiveTab("users")}
-              className={`w-full text-left px-4 py-2 rounded ${
-                activeTab === "users"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-300 text-gray-700 hover:bg-blue-400 hover:text-white"
-              }`}
-            >
-              User Management
-            </button>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Total Users Card */}
+      <div className="bg-white p-6 rounded shadow hover:shadow-lg transition-shadow">
+        <h2 className="text-2xl font-bold text-gray-700">Total Users</h2>
+        <p className="text-4xl font-semibold text-blue-600 mt-4">1,245</p>
+      </div>
+
+      {/* Total Courses Card */}
+      <div className="bg-white p-6 rounded shadow hover:shadow-lg transition-shadow">
+        <h2 className="text-2xl font-bold text-gray-700">Total Courses</h2>
+        <p className="text-4xl font-semibold text-green-600 mt-4">532</p>
+      </div>
+
+      {/* Pending Approvals Card */}
+      <div className="bg-white p-6 rounded shadow hover:shadow-lg transition-shadow">
+        <h2 className="text-2xl font-bold text-gray-700">Pending Approvals</h2>
+        <p className="text-4xl font-semibold text-yellow-600 mt-4">67</p>
+      </div>
+
+      {/* Latest Users Section */}
+      <div className="bg-white p-6 rounded shadow col-span-2 md:col-span-1 lg:col-span-2">
+        <h2 className="text-xl font-bold text-gray-700 mb-4">Latest Users</h2>
+        <ul className="space-y-3">
+          <li className="flex justify-between items-center">
+            <span className="font-medium">John Doe</span>
+            <span className="text-gray-500 text-sm">Registered: 2 hours ago</span>
           </li>
-          <li>
-            <button
-              onClick={() => setActiveTab("courses")}
-              className={`w-full text-left px-4 py-2 rounded ${
-                activeTab === "courses"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-300 text-gray-700 hover:bg-blue-400 hover:text-white"
-              }`}
-            >
-              Course Management
-            </button>
+          <li className="flex justify-between items-center">
+            <span className="font-medium">Jane Smith</span>
+            <span className="text-gray-500 text-sm">Registered: 1 day ago</span>
+          </li>
+          <li className="flex justify-between items-center">
+            <span className="font-medium">Alice Johnson</span>
+            <span className="text-gray-500 text-sm">Registered: 3 days ago</span>
           </li>
         </ul>
-        <button
-          onClick={() => {
-            localStorage.removeItem("accessToken");
-            window.location.href = "/login";
-          }}
-          className="mt-10 w-full bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
-        >
-          Logout
-        </button>
-      </aside>
+      </div>
 
-      {/* Main Content */}
-      <main className="flex-1 p-6 bg-gray-50">{renderTabContent()}</main>
+      {/* Recent Activities Section */}
+      <div className="bg-white p-6 rounded shadow">
+        <h2 className="text-xl font-bold text-gray-700 mb-4">Recent Activities</h2>
+        <ul className="space-y-3">
+          <li>
+            <p className="text-gray-700">John Doe enrolled in "React Basics".</p>
+            <span className="text-gray-500 text-sm">5 minutes ago</span>
+          </li>
+          <li>
+            <p className="text-gray-700">Jane Smith completed "Node.js Masterclass".</p>
+            <span className="text-gray-500 text-sm">1 hour ago</span>
+          </li>
+          <li>
+            <p className="text-gray-700">Alice Johnson created a new course.</p>
+            <span className="text-gray-500 text-sm">2 days ago</span>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 };

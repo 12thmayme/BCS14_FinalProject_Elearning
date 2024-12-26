@@ -20,59 +20,51 @@ const UserManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [alert, setAlert] = useState({ type: "", message: "", show: false });
 
-  // Load users on component mount
+  const navigate = useNavigate();
+
   useEffect(() => {
     loadUsers();
   }, []);
 
-  // Fetch user list from API
   const loadUsers = async () => {
     try {
       const response = await api.getUserList();
       setUsers(response.data);
-      setFilteredUsers(response.data); // Initialize filtered users
+      setFilteredUsers(response.data);
     } catch (error) {
       console.error("Error fetching users:", error);
       showAlert("error", "Failed to fetch users.");
     }
   };
 
-  // Handle input changes in the modal form
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
   };
 
-  // Handle search input change
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-    if (value === "") {
-      setFilteredUsers(users); // Reset if search is cleared
-    } else {
-      const filtered = users.filter(
-        (user) =>
-          user.taiKhoan.toLowerCase().includes(value.toLowerCase()) ||
-          user.hoTen.toLowerCase().includes(value.toLowerCase()) ||
-          user.email.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredUsers(filtered);
-    }
+    setFilteredUsers(
+      value
+        ? users.filter(
+            (user) =>
+              user.taiKhoan.toLowerCase().includes(value.toLowerCase()) ||
+              user.hoTen.toLowerCase().includes(value.toLowerCase()) ||
+              user.email.toLowerCase().includes(value.toLowerCase())
+          )
+        : users
+    );
   };
 
-  // Show alert
   const showAlert = (type, message) => {
     setAlert({ type, message, show: true });
     setTimeout(() => setAlert({ ...alert, show: false }), 3000);
   };
 
-  // Open modal for adding or editing a user
   const openModal = (user = null) => {
     if (user) {
-      setUserData((preValue) => ({
-        ...preValue,
-        ...user,
-      }));
+      setUserData(user);
       setIsEditing(true);
     } else {
       resetForm();
@@ -81,20 +73,17 @@ const UserManagement = () => {
     setIsModalOpen(true);
   };
 
-  // Close modal
   const closeModal = () => {
     setIsModalOpen(false);
     resetForm();
   };
 
-  // Add or update a user
   const handleAddOrUpdateUser = async () => {
     if (!userData.taiKhoan || !userData.email) {
       showAlert("warning", "Please fill out all required fields.");
       return;
     }
 
-    // Check for duplicate user before adding
     if (!isEditing) {
       const isDuplicate = users.some(
         (user) =>
@@ -112,7 +101,6 @@ const UserManagement = () => {
         await api.updateUser(userData);
         showAlert("success", "User updated successfully!");
       } else {
-        console.log({ userData });
         await api.addUser({
           ...userData,
           maLoaiNguoiDung: userData.maLoaiNguoiDung || "HV",
@@ -122,19 +110,15 @@ const UserManagement = () => {
       closeModal();
       loadUsers();
     } catch (error) {
-      console.error(
-        "Error saving user:",
-        error.response?.data || error.message
-      );
+      console.error("Error saving user:", error.response?.data || error.message);
       showAlert("error", "Failed to save user.");
     }
   };
 
-  // Delete user
   const handleDeleteUser = async (taiKhoan) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
-        await api.deleteUser(taiKhoan); // Delete API
+        await api.deleteUser(taiKhoan);
         showAlert("success", "User deleted successfully!");
         loadUsers();
       } catch (error) {
@@ -144,7 +128,6 @@ const UserManagement = () => {
     }
   };
 
-  // Reset form
   const resetForm = () => {
     setUserData({
       taiKhoan: "",
@@ -157,118 +140,75 @@ const UserManagement = () => {
     });
   };
 
-  const navigate = useNavigate();
-
   return (
     <div className="container mx-auto px-4">
-      {/* Alert */}
-      {alert.show && (
-        <Alert
-          type={alert.type}
-          message={alert.message}
-          onClose={() => setAlert({ ...alert, show: false })}
-        />
-      )}
+      {alert.show && <Alert type={alert.type} message={alert.message} onClose={() => setAlert({ ...alert, show: false })} />}
 
-      <div className="flex flex-col">
-        <main className="w-full">
-          <h2 className="text-3xl font-bold mb-8 text-center">
-            User Management
-          </h2>
+      <h2 className="text-3xl font-bold mb-8 text-center">User Management</h2>
 
-          {/* Search Input */}
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            placeholder="Search by Account, Name, or Email"
-            className="mb-4 w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-400"
-          />
+      <input
+        type="text"
+        value={searchTerm}
+        onChange={handleSearchChange}
+        placeholder="Search by Account, Name, or Email"
+        className="mb-4 w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-400"
+      />
 
-          {/* Add User Button */}
+      <button
+        onClick={() => openModal()}
+        className="mb-4 px-6 py-2 text-white font-semibold bg-blue-500 hover:bg-blue-600 rounded shadow"
+      >
+        Add User
+      </button>
+
+      <div className="bg-white p-4 rounded shadow-lg">
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">User List</h3>
+        <div className="overflow-y-auto" style={{ maxHeight: "400px" }}>
+        <table className="table-fixed w-full border-collapse border border-gray-300">
+  <thead>
+    <tr className="bg-gray-100 border-b border-gray-300">
+      <th className="px-4 py-2 text-start font-medium text-gray-600">Account</th>
+      <th className="px-4 py-2 text-start font-medium text-gray-600">Full Name</th>
+      <th className="px-4 py-2 text-start font-medium text-gray-600">Email</th>
+      <th className="px-4 py-2 text-start font-medium text-gray-600">Phone</th>
+      <th className="px-4 py-2 text-start font-medium text-gray-600">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {filteredUsers.map((user) => (
+      <tr key={user.taiKhoan} className="border-b border-gray-300">
+        <td className="px-2 py-2 text-sm text-gray-700 truncate max-w-[150px]">{user.taiKhoan}</td>
+        <td className="px-2 py-2 text-sm text-gray-700 truncate max-w-[150px]">{user.hoTen}</td>
+        <td className="px-2 py-2 text-sm text-gray-700 truncate max-w-[200px]">{user.email}</td>
+        <td className="px-2 py-2 text-sm text-gray-700 truncate max-w-[100px]">{user.soDt}</td>
+        <td className="px-2 py-2 text-sm text-gray-700 flex space-x-2">
           <button
-            onClick={() => openModal()}
-            className="mb-4 px-6 py-2 text-white font-semibold bg-blue-500 hover:bg-blue-600 rounded shadow"
+            onClick={() => openModal(user)}
+            className="px-2 py-1 text-white bg-yellow-500 hover:bg-yellow-600 rounded shadow"
           >
-            Add User
+            <i className="fas fa-edit"></i>
           </button>
+          <button
+            onClick={() => handleDeleteUser(user.taiKhoan)}
+            className="px-2 py-1 text-white bg-red-500 hover:bg-red-600 rounded shadow"
+          >
+            <i className="fas fa-trash"></i>
+          </button>
+          <button
+            onClick={() => navigate(`/admin/user-enrollments/${user.taiKhoan}`)}
+            className="px-2 py-1 text-white bg-orange-500 hover:bg-orange-600 rounded shadow"
+          >
+            <i className="fas fa-users"></i>
+          </button>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
 
-          {/* User List */}
-          <div className="bg-white p-4 rounded shadow-lg">
-            <h3 className="text-lg font-semibold mb-4 text-gray-700">
-              User List
-            </h3>
-            <div className="overflow-y-auto">
-              <table className="table-fixed w-full border-collapse border border-gray-300">
-                <thead>
-                  <tr className="bg-gray-100 border-b border-gray-300">
-                    <th className="w-1/5 px-4 py-2 text-center text-sm font-medium text-gray-600">
-                      Account
-                    </th>
-                    <th className="w-1/5 px-4 py-2 text-center text-sm font-medium text-gray-600">
-                      Full Name
-                    </th>
-                    <th className="w-1/5 px-4 py-2 text-center text-sm font-medium text-gray-600">
-                      Email
-                    </th>
-                    <th className="w-1/5 px-4 py-2 text-center text-sm font-medium text-gray-600">
-                      Phone
-                    </th>
-                    <th className="w-1/5 px-4 py-2 text-center text-sm font-medium text-gray-600">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredUsers.map((user) => (
-                    <tr
-                      key={user.taiKhoan}
-                      className="border-b border-gray-300"
-                    >
-                      <td className="px-2 py-2 text-sm text-gray-700">
-                        {user.taiKhoan}
-                      </td>
-                      <td className="px-2 py-2 text-sm text-gray-700">
-                        {user.hoTen}
-                      </td>
-                      <td className="px-2 py-2 text-sm text-gray-700">
-                        {user.email}
-                      </td>
-                      <td className="px-2 py-2 text-sm text-gray-700">
-                        {user.soDt}
-                      </td>
-                      <td className="px-2 py-2 text-sm text-gray-700 flex justify-center space-x-2">
-                        <button
-                          onClick={() => openModal(user)}
-                          className="px-2 py-1 text-white bg-yellow-500 hover:bg-yellow-600 rounded shadow"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDeleteUser(user.taiKhoan)}
-                          className="px-2 py-1 text-white bg-red-500 hover:bg-red-600 rounded shadow"
-                        >
-                          Delete
-                        </button>
-                        <button
-                          onClick={() =>
-                            navigate(`/user-enrollments/${user.taiKhoan}`)
-                          }
-                          className="px-2 py-1 text-white bg-orange-500 hover:bg-orange-600 rounded shadow"
-                        >
-                          View Enrollments
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </main>
+        </div>
       </div>
 
-      {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded shadow-lg w-1/2">
@@ -322,6 +262,7 @@ const UserManagement = () => {
                 onChange={handleInputChange}
                 className="border border-gray-300 rounded px-4 py-2"
               >
+                <option value="">Select Role</option>
                 <option value="HV">Student</option>
                 <option value="GV">Instructor</option>
               </select>

@@ -7,6 +7,7 @@ const UserEnrollmentManagement = () => {
   const [notEnrolledCourses, setNotEnrolledCourses] = useState([]);
   const [pendingApprovalCourses, setPendingApprovalCourses] = useState([]);
   const [approvedCourses, setApprovedCourses] = useState([]);
+  const [activeTab, setActiveTab] = useState("approved"); // Default tab
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -36,30 +37,23 @@ const UserEnrollmentManagement = () => {
   const handleEnroll = async (courseId, userId) => {
     const data = {
       maKhoaHoc: courseId,
-      taiKhoan: userId, // Admin specifies the user ID
+      taiKhoan: userId,
     };
 
     try {
-      console.log({ data });
-      const response = await api.enroll(data);
+      await api.enroll(data);
       alert("Enrollment successful!");
-      loadUserEnrollments(userId); // Refresh the enrollments
+      loadUserEnrollments(userId);
     } catch (error) {
-      console.error(
-        "Error enrolling user:",
-        error.response?.data || error.message
-      );
-      alert(
-        error.response?.data?.message ||
-          "Failed to enroll the user in the course."
-      );
+      console.error("Error enrolling user:", error.response?.data || error.message);
+      alert(error.response?.data?.message || "Failed to enroll user in the course.");
     }
   };
 
   const handleUnenroll = async (courseId, userId) => {
     const data = {
       maKhoaHoc: courseId,
-      taiKhoan: userId, // Admin specifies the user ID
+      taiKhoan: userId,
     };
 
     try {
@@ -68,34 +62,77 @@ const UserEnrollmentManagement = () => {
       alert("Unenrollment successful!");
       loadUserEnrollments(userId);
     } catch (error) {
-      console.error(
-        "Error unenrolling user:",
-        error.response?.data || error.message
-      );
+      console.error("Error unenrolling user:", error.response?.data || error.message);
       alert("Failed to unenroll the user from the course.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const renderCourseList = (courses, actionButton) => {
+  const renderCourseTable = (courses, actionButton) => {
     if (courses.length === 0) {
-      return <p>No courses available in this category.</p>;
+      return <p className="text-center text-gray-500">No courses available in this category.</p>;
     }
 
     return (
-      <ul>
-        {courses.map((course) => (
-          <li
-            key={course.maKhoaHoc}
-            className="flex justify-between items-center mb-2"
-          >
-            <span>{course.tenKhoaHoc}</span>
-            {actionButton(course)}
-          </li>
-        ))}
-      </ul>
+      <div className="overflow-y-auto" style={{ maxHeight: "400px" }}>
+        <table className="table-auto w-full border-collapse border border-gray-300">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="px-4 py-2 text-left border border-gray-300 text-sm font-medium text-gray-600">
+                Course Name
+              </th>
+              <th className="px-4 py-2 text-left border border-gray-300 text-sm font-medium text-gray-600">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {courses.map((course) => (
+              <tr key={course.maKhoaHoc}>
+                <td className="px-4 py-2 border border-gray-300 text-gray-700">{course.tenKhoaHoc}</td>
+                <td className="px-4 py-2 border border-gray-300 text-gray-700">
+                  {actionButton(course)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     );
+  };
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case "notEnrolled":
+        return renderCourseTable(notEnrolledCourses, (course) => (
+          <button
+            onClick={() => handleEnroll(course.maKhoaHoc, userId)}
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Enroll
+          </button>
+        ));
+      case "pendingApproval":
+        return renderCourseTable(pendingApprovalCourses, (course) => (
+          <button
+            onClick={() => handleUnenroll(course.maKhoaHoc, userId)}
+            className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+          >
+            Unenroll
+          </button>
+        ));
+      case "approved":
+      default:
+        return renderCourseTable(approvedCourses, (course) => (
+          <button
+            onClick={() => handleUnenroll(course.maKhoaHoc, userId)}
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+          >
+            Unenroll
+          </button>
+        ));
+    }
   };
 
   if (isLoading) {
@@ -108,49 +145,44 @@ const UserEnrollmentManagement = () => {
 
   return (
     <div className="container mx-auto px-4">
-      <h2 className="text-3xl font-bold mb-6">User Enrollment Management</h2>
+      <h2 className="text-3xl text-center font-bold mb-6">User Enrollment Management</h2>
 
-      {/* Courses Not Enrolled */}
-      <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-4">Courses Not Enrolled</h3>
-        {renderCourseList(notEnrolledCourses, (course) => (
-          <button
-            onClick={() => {
-              console.log({ course });
-              handleEnroll(course.maKhoaHoc, userId);
-            }}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Enroll
-          </button>
-        ))}
+      {/* Tabs */}
+      <div className="flex justify-center space-x-4 mb-4">
+        <button
+          onClick={() => setActiveTab("notEnrolled")}
+          className={`px-4 py-2 rounded ${
+            activeTab === "notEnrolled"
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 text-gray-700 hover:bg-blue-400 hover:text-white"
+          }`}
+        >
+          Not Enrolled
+        </button>
+        <button
+          onClick={() => setActiveTab("pendingApproval")}
+          className={`px-4 py-2 rounded ${
+            activeTab === "pendingApproval"
+              ? "bg-yellow-500 text-white"
+              : "bg-gray-200 text-gray-700 hover:bg-yellow-400 hover:text-white"
+          }`}
+        >
+          Pending Approval
+        </button>
+        <button
+          onClick={() => setActiveTab("approved")}
+          className={`px-4 py-2 rounded ${
+            activeTab === "approved"
+              ? "bg-red-500 text-white"
+              : "bg-gray-200 text-gray-700 hover:bg-red-400 hover:text-white"
+          }`}
+        >
+          Approved
+        </button>
       </div>
 
-      {/* Courses Pending Approval */}
-      <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-4">Courses Pending Approval</h3>
-        {renderCourseList(pendingApprovalCourses, (course) => (
-          <button
-            onClick={() => handleUnenroll(course.maKhoaHoc, userId)}
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-          >
-            Unenroll
-          </button>
-        ))}
-      </div>
-
-      {/* Approved Courses */}
-      <div>
-        <h3 className="text-xl font-semibold mb-4">Approved Courses</h3>
-        {renderCourseList(approvedCourses, (course) => (
-          <button
-            onClick={() => handleUnenroll(course.maKhoaHoc, userId)}
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-          >
-            Unenroll
-          </button>
-        ))}
-      </div>
+      {/* Tab Content */}
+      <div className="bg-white p-4 rounded shadow">{renderTabContent()}</div>
     </div>
   );
 };
