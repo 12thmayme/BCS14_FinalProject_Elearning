@@ -1,13 +1,5 @@
 import { DOMAIN, http } from "../../Setting/Setting";
-import {
-  BE,
-  DESIGN,
-  FE,
-  FULL_STACK,
-  GROUP_CODE,
-  MOBILE,
-  THINKING,
-} from "../constants/Constants";
+import { GROUP_CODE } from "../constants/Constants";
 
 export const getCourseList = async () => {
   const res = await http.get(
@@ -20,40 +12,49 @@ export const getCourseCatalog = async () => {
   const res = await http.get(`${DOMAIN}/api/QuanLyKhoaHoc/LayDanhMucKhoaHoc`);
   return res.data.content;
 };
-export const getMobileCourse = async () => {
+export const getMobileCourse = async (maDanhMuc, MaNhom = GP01) => {
   const res = await http.get(
-    `${DOMAIN}/api/QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc?maDanhMuc=${MOBILE}&MaNhom=${GROUP_CODE}`
+    `${DOMAIN}/api/QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc`,
+    {
+      params: {
+        maDanhMuc,
+        MaNhom,
+      },
+    }
   );
   console.log(res);
   return res.data;
 };
-export const getFECourse = async () => {
+export const getCourse = async (maDanhMuc, MaNhom = GROUP_CODE) => {
   const res = await http.get(
-    `${DOMAIN}/api/QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc?maDanhMuc=${FE}&MaNhom=${GROUP_CODE}`
+    `${DOMAIN}/api/QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc`,
+    {
+      params: {
+        maDanhMuc,
+        MaNhom,
+      },
+    }
   );
   return res.data;
 };
-export const getBECourse = async () => {
-  const res = await http.get(
-    `${DOMAIN}/api/QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc?maDanhMuc=${BE}&MaNhom=${GROUP_CODE}`
-  );
+
+export const getDetailCourse = async (maKhoaHoc) => {
+  const res = await http.get(`${DOMAIN}api/QuanLyKhoaHoc/LayThongTinKhoaHoc`, {
+    params: {
+      maKhoaHoc: maKhoaHoc,
+    },
+  });
   return res.data;
 };
-export const getFullTackCourse = async () => {
-  const res = await http.get(
-    `${DOMAIN}/api/QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc?maDanhMuc=${FULL_STACK}&MaNhom=${GROUP_CODE}`
-  );
+export const registerCourse = async (values) => {
+  const res = await http.post(`${DOMAIN}api/QuanLyKhoaHoc/DangKyKhoaHoc`, {
+    values,
+  });
   return res.data;
 };
-export const getDesignCourse = async () => {
-  const res = await http.get(
-    `${DOMAIN}/api/QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc?maDanhMuc=${DESIGN}&MaNhom=${GROUP_CODE}`
-  );
-  return res.data;
-};
-export const getThinkingCourse = async () => {
-  const res = await http.get(
-    `${DOMAIN}/api/QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc?maDanhMuc=${THINKING}&MaNhom=${GROUP_CODE}`
-  );
+export const cancelCourse = async (values) => {
+  const res = await http.post(`${DOMAIN}api/QuanLyKhoaHoc/HuyGhiDanh`, {
+    values,
+  });
   return res.data;
 };

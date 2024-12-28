@@ -1,4 +1,5 @@
 import axios from "axios";
+import { showErrorToast } from "../customs/CustomAlert";
 
 export const DOMAIN = "https://elearning0706.cybersoft.edu.vn";
 export const http = axios.create({
@@ -25,26 +26,26 @@ http.interceptors.response.use(
         break;
       case 404:
         {
-          alert("Not found");
+          showErrorToast("Not found");
           // navigateHistory.push("/admin");
         }
         break;
       case 401:
         {
-          alert("Your token is invalid.");
+          showErrorToast("Your token is invalid.");
           // navigateHistory.push("/admin");
         }
         break;
       case 403:
         {
-          alert("You do not have sufficient access rights.");
+          showErrorToast("You do not have sufficient access rights.");
           // navigateHistory.push("/");
         }
         break;
 
       case 500:
         {
-          alert("error in sever");
+          showErrorToast("error in sever");
           // navigateHistory.push("/admin");
         }
         break;

@@ -6,17 +6,17 @@ const Footer = () => {
     <>
       <footer className="footer">
         <div className="container">
-          <div className="row p-5">
-            <div className="col-4">
+          <div className="grid grid-cols-6 gap-8 p-10">
+            <div className="col-span-6 md:col-span-3 lg:col-span-2 lg:pl-20">
               <NavLink className="navbar-brand" to="/">
                 <img
                   src="./public/logoSybersoft.png"
                   alt=""
-                  style={{ height: "70px" }}
+                  className="h-8 md:h-10 lg:h-[70px]"
                 />
               </NavLink>
               <div>
-                <ul className="d-flex align-item-center mt-3">
+                <ul className="flex item-center ">
                   <li>
                     <NavLink className="footer_social">
                       <i className="fa-brands fa-facebook-f"></i>
@@ -35,8 +35,10 @@ const Footer = () => {
                 </ul>
               </div>
             </div>
-            <div className="col-2">
-              <h3 className="footer_title">Product</h3>
+            <div className="col-span-3 md:col-span-3 lg:col-span-1">
+              <h3 className="text-sm md:text-base xl:text-lg font-semibold ">
+                Product
+              </h3>
               <ul>
                 <li>
                   <NavLink className="footer_item">Courses</NavLink>
@@ -49,8 +51,10 @@ const Footer = () => {
                 </li>
               </ul>
             </div>
-            <div className="col-2">
-              <h3 className="footer_title">General policies & support</h3>
+            <div className="col-span-3 md:col-span-3 lg:col-span-1">
+              <h3 className="text-sm md:text-base xl:text-lg font-semibold">
+                General policies & support
+              </h3>
               <ul>
                 <li>
                   <NavLink className="footer_item">Blogs</NavLink>
@@ -63,8 +67,10 @@ const Footer = () => {
                 </li>
               </ul>
             </div>
-            <div className="col-4">
-              <h3 className="footer_title">Stay up to date</h3>
+            <div className="col-span-6 md:col-span-3 lg:col-span-2">
+              <h3 className="text-sm md:text-base xl:text-lg font-semibold ">
+                Stay up to date
+              </h3>
               <ul>
                 <li className="d-flex flex-no-wrap">
                   <input type="text" placeholder="Email" />

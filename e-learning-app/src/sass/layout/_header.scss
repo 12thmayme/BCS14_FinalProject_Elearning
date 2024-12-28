@@ -5,6 +5,12 @@ header {
   position: fixed;
   width: 100%;
   z-index: 999;
+  a {
+    transition: all 0.3s linear;
+    &:hover {
+      color: $color-text-hover;
+    }
+  }
 }
 .navbar {
   background-color: $secondary;
@@ -43,6 +49,9 @@ header {
       color: $secondary;
       text-transform: uppercase;
       transition: all 0.3s linear;
+    }
+    &_social {
+      @include FlexBox(center, end);
     }
   }
   &-collapse {
@@ -100,6 +109,7 @@ header {
     }
   }
 }
+
 .scrolled {
   animation: slide-down 0.5s linear forwards;
   transition: all 0.3s linear;
