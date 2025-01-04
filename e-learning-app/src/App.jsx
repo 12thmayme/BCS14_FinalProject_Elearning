@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import CourseManagement from "./pages/admin/CourseManagement";
 import UserManagement from "./pages/admin/UserManangement";
 import Auth from "./components/Auth";
@@ -17,7 +22,10 @@ function App() {
     <Router>
       <Routes>
         {/* Authentication Routes */}
-        <Route path="/login" element={<Auth setIsAuthenticated={setIsAuthenticated} />} />
+        <Route
+          path="/login"
+          element={<Auth setIsAuthenticated={setIsAuthenticated} />}
+        />
         <Route path="/register" element={<Auth isRegister />} />
 
         {/* Admin Routes */}
@@ -29,14 +37,20 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route index element={<Navigate to="dashboard" replace />} /> {/* Redirect to dashboard */}
+          <Route index element={<Navigate to="dashboard" replace />} />{" "}
+          {/* Redirect to dashboard */}
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="user-management" element={<UserManagement />} />
           <Route path="course-management" element={<CourseManagement />} />
-          <Route path="user-enrollments/:userId" element={<UserEnrollmentManagement />} />
-          <Route path="course-enrollments/:courseId" element={<CourseEnrollmentManagement />} />
+          <Route
+            path="user-enrollments/:userId"
+            element={<UserEnrollmentManagement />}
+          />
+          <Route
+            path="course-enrollments/:courseId"
+            element={<CourseEnrollmentManagement />}
+          />
         </Route>
-
       </Routes>
     </Router>
   );
