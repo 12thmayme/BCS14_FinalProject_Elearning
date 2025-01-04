@@ -1,3 +1,4 @@
+import { localService } from "../../../api/localService";
 import { DOMAIN, http } from "../../Setting/Setting";
 import { GROUP_CODE } from "../constants/Constants";
 
@@ -10,7 +11,7 @@ export const getCourseList = async () => {
 
 export const getCourseCatalog = async () => {
   const res = await http.get(`${DOMAIN}/api/QuanLyKhoaHoc/LayDanhMucKhoaHoc`);
-  return res.data.content;
+  return res.data;
 };
 export const getMobileCourse = async (maDanhMuc, MaNhom = GP01) => {
   const res = await http.get(
@@ -39,7 +40,7 @@ export const getCourse = async (maDanhMuc, MaNhom = GROUP_CODE) => {
 };
 
 export const getDetailCourse = async (maKhoaHoc) => {
-  const res = await http.get(`${DOMAIN}api/QuanLyKhoaHoc/LayThongTinKhoaHoc`, {
+  const res = await http.get(`${DOMAIN}/api/QuanLyKhoaHoc/LayThongTinKhoaHoc`, {
     params: {
       maKhoaHoc: maKhoaHoc,
     },
@@ -47,14 +48,26 @@ export const getDetailCourse = async (maKhoaHoc) => {
   return res.data;
 };
 export const registerCourse = async (values) => {
-  const res = await http.post(`${DOMAIN}api/QuanLyKhoaHoc/DangKyKhoaHoc`, {
+  const res = await http.post(
+    `${DOMAIN}/api/QuanLyKhoaHoc/DangKyKhoaHoc`,
     values,
-  });
+    {
+      headers: {
+        Authorization: `Bearer ${localService.getAccessToken()}`,
+      },
+    }
+  );
   return res.data;
 };
 export const cancelCourse = async (values) => {
-  const res = await http.post(`${DOMAIN}api/QuanLyKhoaHoc/HuyGhiDanh`, {
+  const res = await http.post(
+    `${DOMAIN}/api/QuanLyKhoaHoc/HuyGhiDanh`,
     values,
-  });
+    {
+      headers: {
+        Authorization: `Bearer ${localService.getAccessToken()}`,
+      },
+    }
+  );
   return res.data;
 };

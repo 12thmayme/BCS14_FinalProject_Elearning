@@ -1,19 +1,32 @@
 import React, { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { registerApi } from "../../util/API/User/UserApi";
-import { useNavigate } from "react-router-dom";
-import { setCookie } from "../../util/Setting/Setting";
+import { FaArrowLeft, FaEyeSlash, FaRegEye } from "react-icons/fa";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import * as Yup from "yup";
-import { ToastContainer, toast } from "react-toastify";
+import { useMutation } from "@tanstack/react-query";
+
+import { registerApi } from "../../util/API/User/UserApi";
 import {
   showErrorToast,
   showSuccessToast,
 } from "../../util/customs/CustomAlert";
-import { FaEyeSlash, FaRegEye } from "react-icons/fa";
+import { signupValidationSchema } from "../../util/schemaValidation/SchemaVatidation";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+
+  const mutation = useMutation({
+    mutationKey: ["registerApi"],
+    mutationFn: registerApi,
+    onSuccess: (data) => {
+      showSuccessToast("Registration successful");
+      navigate("/users/login");
+    },
+    onError: (error) => {
+      showErrorToast(error.response?.data || "Registration failed");
+    },
+  });
   const formik = useFormik({
     initialValues: {
       taiKhoan: "",
@@ -23,56 +36,16 @@ const Signup = () => {
       maNhom: "GP01",
       email: "",
     },
-    validationSchema: Yup.object({
-      taiKhoan: Yup.string()
-        .matches(/^[a-zA-Z0-9]+$/, "Invalid account please re-enter")
-        .required("Required account cannot be blank"),
-      matKhau: Yup.string()
-        .matches(/^.{6,12}$/, "Password must be between 6 and 12 characters")
-        .required("Required password cannot be blank"),
-      hoTen: Yup.string()
-        .matches(
-          /^[a-zA-ZÀ-ỹ\s]+$/,
-          "Full name can only contain letters and spaces"
-        )
-        .required("Required fullname cannot be blank"),
-      soDT: Yup.string()
-        .matches(/^\d{10,11}$/, "Phone number must be 10 to 11 digits")
-        .required("Required phone cannot be blank"),
-      email: Yup.string()
-        .matches(
-          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-          "Invalid email "
-        )
-        .required("Required email cannot be blank"),
-    }),
-    onSubmit: (values) => {
-      console.log(values);
-      mutation.mutateAsync(values);
+    validationSchema: signupValidationSchema,
+    onSubmit: async (values) => {
+      await mutation.mutateAsync(values);
     },
   });
 
-  const mutation = useMutation({
-    mutationKey: ["registerApi"],
-    mutationFn: registerApi,
-    onSuccess: (data) => {
-      console.log(data);
-      showSuccessToast("Registration successful");
-      navigate("/users/login");
-    },
-    onError: (error) => {
-      console.log(error);
-      showErrorToast(error);
-    },
-  });
-  const [showPassword, setShowPassword] = useState(false);
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
   return (
-    <div className="col-6 signup_right">
+    <div className="w-[40vw] signup_right">
       <h1 className="signup_heading">Sign Up</h1>
-      <h2 className="signup_caption">sign up of with</h2>
+      <h2 className="signup_caption">Sign up with</h2>
       <div className="signup-social">
         <div className="signup-social_item">
           <i className="fa-brands fa-google signup-social_icon"></i>
@@ -80,41 +53,45 @@ const Signup = () => {
         </div>
         <div className="signup-social_item">
           <i className="fa-brands fa-facebook-f signup-social_icon"></i>
-          <span className="sign-social_text">Sign up with Fabook</span>
+          <span className="sign-social_text">Sign up with Facebook</span>
         </div>
       </div>
       <form onSubmit={formik.handleSubmit}>
+        {/* Account */}
         <div className="form-group">
-          <label className="text-lg" htmlFor="taiKhoan">
-            Account
-          </label>
-          {formik.errors.taiKhoan ? (
-            <p className="text-danger">{formik.errors.taiKhoan}</p>
-          ) : null}
+          <label htmlFor="taiKhoan">Account</label>
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${
+              formik.touched.taiKhoan && formik.errors.taiKhoan
+                ? "border-red-500"
+                : ""
+            }`}
             id="taiKhoan"
             name="taiKhoan"
+            value={formik.values.taiKhoan}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
+          {formik.touched.taiKhoan && formik.errors.taiKhoan && (
+            <p className="text-red-500">{formik.errors.taiKhoan}</p>
+          )}
         </div>
         <div className="form-group">
-          <label className="text-lg" htmlFor="matKhau">
-            Password
-          </label>
-          {formik.errors.matKhau ? (
-            <p className="text-danger">{formik.errors.matKhau}</p>
-          ) : null}
+          <label htmlFor="matKhau">Password</label>
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
-              className="form-control"
+              className={`form-control ${
+                formik.touched.matKhau && formik.errors.matKhau
+                  ? "border-red-500"
+                  : ""
+              }`}
               id="matKhau"
               name="matKhau"
+              value={formik.values.matKhau}
               onChange={formik.handleChange}
-              onBlur={formik.onBlur}
+              onBlur={formik.handleBlur}
             />
             <div
               onClick={togglePasswordVisibility}
@@ -123,77 +100,68 @@ const Signup = () => {
               {showPassword ? <FaRegEye /> : <FaEyeSlash />}
             </div>
           </div>
+          {formik.touched.matKhau && formik.errors.matKhau && (
+            <p className="text-red-500">{formik.errors.matKhau}</p>
+          )}
         </div>
         <div className="form-group">
-          <label className="text-lg" htmlFor="hoTen">
-            Full name
-          </label>
-          {formik.errors.hoTen ? (
-            <p className="text-danger">{formik.errors.hoTen}</p>
-          ) : null}
+          <label htmlFor="hoTen">Full Name</label>
           <input
             type="text"
             className="form-control"
             id="hoTen"
             name="hoTen"
+            value={formik.values.hoTen}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
+          {formik.touched.hoTen && formik.errors.hoTen && (
+            <p className="text-red-500">{formik.errors.hoTen}</p>
+          )}
         </div>
         <div className="form-group">
-          <label className="text-lg" htmlFor="soDT">
-            Phone
-          </label>
-          {formik.errors.soDT ? (
-            <p className="text-danger">{formik.errors.soDT}</p>
-          ) : null}
+          <label htmlFor="soDT">Phone</label>
           <input
             type="text"
             className="form-control"
             id="soDT"
             name="soDT"
+            value={formik.values.soDT}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
         </div>
         <div className="form-group">
-          <label className="text-lg" htmlFor="maNhom">
-            Group code
-          </label>
-
+          <label htmlFor="maNhom">Group Code</label>
           <input
             type="text"
             className="form-control"
             id="maNhom"
             name="maNhom"
-            onChange={formik.handleChange}
             value={formik.values.maNhom}
-            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
           />
         </div>
         <div className="form-group">
-          <label className="text-lg" htmlFor="email">
-            Email
-          </label>
-          {formik.errors.email ? (
-            <p className="text-danger">{formik.errors.email}</p>
-          ) : null}
+          <label htmlFor="email">Email</label>
           <input
             type="email"
             className="form-control"
             id="email"
             name="email"
+            value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
         </div>
-        <div className="form-group">
-          <button
-            type="submit"
-            className="px-8 py-4 rounded-2xl bg-blue-700 mt-5 "
-          >
-            Register
+        <div className="flex justify-between mt-5 text-white">
+          <button type="submit" className="px-8 py-4 rounded-3xl bg-blue-700">
+            {mutation.isLoading ? "Registering..." : "Register"}
           </button>
+          <NavLink to="/" className="text-blue-500 flex items-center">
+            <FaArrowLeft />
+            Back to home
+          </NavLink>
         </div>
       </form>
     </div>

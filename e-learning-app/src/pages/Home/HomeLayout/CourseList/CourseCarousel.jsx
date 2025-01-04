@@ -1,11 +1,9 @@
 import React from "react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
-import { BsXLg } from "react-icons/bs";
-import FallbackImage from "./FallbackImage";
-import { NavLink } from "react-router-dom";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
+import CarCourse from "../../../../util/productCommon/CarCourse";
 
 const CourseCarousel = (props) => {
   const { data } = props;
@@ -60,32 +58,9 @@ const CourseCarousel = (props) => {
   return (
     <div className="container mx-auto px-4 py-8">
       <Slider {...settings}>
-        {data?.map((course) => (
-          <div key={course.maKhoaHoc} className="p-4">
-            <div className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-              <FallbackImage
-                src={
-                  course.hinhAnh
-                    ? course.hinhAnh
-                    : "./public/fontend_image.jpeg"
-                }
-                alt={course.tenKhoaHoc}
-                className="w-full h-48 object-cover"
-              />
-              <NavLink to={`/detail/${course.maKhoaHoc}`} className="p-4 block">
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  {course.tenKhoaHoc}
-                </h3>
-                <p className="text-sm text-gray-600 mb-1">
-                  <strong>View:</strong> {course.luotXem}
-                </p>
-                <p className="text-sm text-gray-600">
-                  {course.danhMucKhoaHoc.tenDanhMucKhoaHoc}
-                </p>
-              </NavLink>
-            </div>
-          </div>
-        ))}
+        {data?.map((course) => {
+          return <CarCourse course={course} />;
+        })}
       </Slider>
     </div>
   );

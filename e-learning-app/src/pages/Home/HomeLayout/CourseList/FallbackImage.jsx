@@ -1,17 +1,21 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const FallbackImage = ({ src, alt, className, ...rest }) => {
+const FallbackImage = ({ src, alt, className, fallbackSrc, ...rest }) => {
   const [imgSrc, setImgSrc] = useState(src);
+
+  useEffect(() => {
+    setImgSrc(src); // Cập nhật imgSrc khi prop src thay đổi
+  }, [src]);
+
   const handleError = () => {
-    setImgSrc("./public/fontend_image.jpeg");
+    setImgSrc(fallbackSrc || "/fontend_image.jpeg"); // Sử dụng đường dẫn tuyệt đối
   };
 
   return (
     <img
       {...rest}
       src={imgSrc}
-      alt={alt}
+      alt={alt || "fallback image"}
       className={className}
       onError={handleError}
     />

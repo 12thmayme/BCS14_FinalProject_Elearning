@@ -15,13 +15,28 @@ export const loginApi = async (userLogin) => {
   );
   return res.data;
 };
-export const getProfile = async () => {
+
+export const getInfo = async () => {
   const res = await http.post(
-    `${DOMAIN}/api/QuanLyNguoiDung/ThongTinTaiKhoan`,
-    userLogin,
+    `${DOMAIN}/api/QuanLyNguoiDung/ThongTinNguoiDung`,
+    {},
     {
-      header: {
-        Authorization: `Bearer + ${localService.getAccessToken()}`,
+      headers: {
+        Authorization: `Bearer ${localService.getAccessToken()}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return res.data;
+};
+
+export const updateUser = async (values) => {
+  const res = await http.put(
+    `${DOMAIN}/api/QuanLyNguoiDung/CapNhatThongTinNguoiDung`,
+    values,
+    {
+      headers: {
+        Authorization: `Bearer ${localService.getAccessToken()}`,
         "Content-Type": "application/json",
       },
     }

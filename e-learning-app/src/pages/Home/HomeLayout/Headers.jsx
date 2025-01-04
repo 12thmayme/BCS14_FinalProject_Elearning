@@ -13,7 +13,10 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import { HiMenu } from "react-icons/hi";
 import { HiMiniXMark } from "react-icons/hi2";
 import { NavLink } from "react-router-dom";
+import { localService } from "../../../api/localService";
+import Avatar, { Avatars } from "../../../util/customs/CustomAvatar";
 export default function Headers() {
+  const user = localService.getUser();
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const handleScroll = () => {
@@ -63,13 +66,13 @@ export default function Headers() {
         <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
           <div className="relative flex h-16 items-center justify-between">
             <div className="flex items-center md:px-2 lg:px-0">
-              <div className="shrink-0">
+              <NavLink to="/" className="shrink-0">
                 <img
                   alt="Your Company"
                   src="./public/logoSybersoft.png"
                   className="h-6 md:h-10 lg:h-16 w-auto"
                 />
-              </div>
+              </NavLink>
               <div className="hidden lg:ml-6 lg:block">
                 <div className="flex space-x-4">
                   <NavLink href="#" className="rounded-md px-3 py-2 ">
@@ -131,11 +134,7 @@ export default function Headers() {
                     <MenuButton className="relative flex rounded-full bg-gray-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">Open user menu</span>
-                      <img
-                        alt=""
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        className="size-8 rounded-full"
-                      />
+                      <Avatars name={user?.hoTen || "Null"} />
                     </MenuButton>
                   </div>
                   <MenuItems
@@ -143,12 +142,21 @@ export default function Headers() {
                     className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                   >
                     <MenuItem>
-                      <NavLink
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
-                      >
-                        Your Profile
-                      </NavLink>
+                      {user ? (
+                        <NavLink
+                          to="users/profile"
+                          className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
+                        >
+                          {user.hoTen || ""}
+                        </NavLink>
+                      ) : (
+                        <NavLink
+                          to="users/login"
+                          className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
+                        >
+                          Sign in
+                        </NavLink>
+                      )}
                     </MenuItem>
                     <MenuItem>
                       <NavLink
@@ -160,7 +168,10 @@ export default function Headers() {
                     </MenuItem>
                     <MenuItem>
                       <NavLink
-                        href="#"
+                        onClick={() => {
+                          localService.removeUser();
+                          localService.removeAccessToken();
+                        }}
                         className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
                       >
                         Sign out
@@ -200,16 +211,14 @@ export default function Headers() {
           <div className="border-t border-gray-700 pb-3 pt-4">
             <div className="flex items-center px-5">
               <div className="shrink-0">
-                <img
-                  alt=""
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  className="size-10 rounded-full"
-                />
+                <Avatar name={user?.hoTen || "Null"} />
               </div>
               <div className="ml-3">
-                <div className="text-base font-medium text-white">Tom Cook</div>
+                <div className="text-base font-medium text-white">
+                  {user?.hoTen || ""}
+                </div>
                 <div className="text-sm font-medium text-gray-400">
-                  tom@example.com
+                  {user?.email || ""}
                 </div>
               </div>
               <button
@@ -238,7 +247,9 @@ export default function Headers() {
               </DisclosureButton>
               <DisclosureButton
                 as="a"
-                href="#"
+                onClick={() => {
+                  localService.removeUser();
+                }}
                 className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
               >
                 Sign out

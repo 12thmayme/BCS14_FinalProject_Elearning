@@ -13,6 +13,10 @@ import Signup from "./pages/account/Signup.jsx";
 import Detail from "./pages/detail/Detail.jsx";
 import Profile from "./pages/account/profile/Profile.jsx";
 import Contact from "./pages/contact/contact.jsx";
+import Course from "./pages/courses/Course.jsx";
+import CourseCatalog from "./pages/courses/CourseCatalog.jsx";
+import Profiles from "./pages/user/Profile.jsx";
+import FromProfile from "./pages/account/profile/FromProfile.jsx";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +29,8 @@ function App() {
           <Route path="" element={<HomeMaster />}>
             <Route path="home" element={<HomePage />}></Route>
             <Route index element={<HomePage />}></Route>
+            <Route path="course" element={<Course />}></Route>
+            <Route path="course-catalog" element={<CourseCatalog />}></Route>
             <Route path="contact" element={<Contact />}></Route>
             <Route path="/detail">
               <Route path=":productID" element={<Detail />}></Route>
@@ -35,7 +41,10 @@ function App() {
               <Route index path="login" element={<Login />} />
               <Route path="sign-up" element={<Signup />}></Route>
             </Route>
-            <Route path="profile" element={<Profile />}></Route>
+            <Route path="profile" element={<Profile />}>
+              <Route path="" element={<FromProfile />}></Route>
+            </Route>
+            <Route path="profile-s" element={<Profiles />}></Route>
           </Route>
         </Routes>
       </QueryClientProvider>
