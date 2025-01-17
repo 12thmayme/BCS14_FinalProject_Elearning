@@ -70,7 +70,7 @@ const Curriculum = () => {
             <div className=" hidden md:block lg:flex justify-center lg:w-[30vw]  items-center ">
               <img
                 className="object-cover w-full lg:w-[70%] lg:h-[35.5rem]  object-top "
-                src="./public/homeCyber/animou_03.png"
+                src="/homeCyber/animou_03.png"
                 alt=""
               />
             </div>

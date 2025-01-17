@@ -8,12 +8,12 @@ import Animation from "../../../../util/customs/Animation";
 const TrainingCatalog = () => {
   const navigate = useNavigate();
   const imageMap = {
-    BackEnd: "./public/back_end.jpeg",
-    Design: "./public/design.jpeg",
-    DiDong: "./public/mobile.png",
-    FrontEnd: "./public/front_end.jpeg",
-    FullStack: "./public/fullstack.jpeg",
-    TuDuy: "./public/thinking.jpeg",
+    BackEnd: "/back_end.jpeg",
+    Design: "/design.jpeg",
+    DiDong: "/mobile.png",
+    FrontEnd: "/front_end.jpeg",
+    FullStack: "/fullstack.jpeg",
+    TuDuy: "/thinking.jpeg",
   };
   const { data, error, isPending } = useQuery({
     queryKey: ["getCourseCatalog"],
@@ -57,7 +57,7 @@ const TrainingCatalog = () => {
               className="p-4 border border-gray-300 rounded-lg shadow-md text-center"
             >
               <img
-                src={imageMap[item.maDanhMuc] || "./public/default.jpeg"}
+                src={imageMap[item.maDanhMuc] || "/default.jpeg"}
                 alt={item.tenDanhMuc}
                 className="w-full h-40 lg:h-50 object-cover mb-4 rounded-md"
               />

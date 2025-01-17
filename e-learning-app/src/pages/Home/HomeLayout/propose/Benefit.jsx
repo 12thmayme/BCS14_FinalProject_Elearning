@@ -17,7 +17,7 @@ const Benefit = () => {
     },
   ];
   return (
-    <section className=" bg-[url('./public/homeCyber/animou4.jpeg')] relative bg-cover bg-center min-h-[40vh] lg:h-[46.5rem] mb-20">
+    <section className=" bg-[url('/homeCyber/animou4.jpeg')] relative bg-cover bg-center min-h-[40vh] lg:h-[46.5rem] mb-20">
       <div className="absolute inset-0 bg-black/60 "></div>
       <div className="container">
         <div className="w-full relative mx-auto text-white px-4 py-12 text-center z-10 lg:px-10">
@@ -38,7 +38,7 @@ const Benefit = () => {
               transition={{ duration: 0.8 }}
             >
               <img
-                src="./public/homeCyber/animou.png"
+                src="/homeCyber/animou.png"
                 alt="Animou"
                 className="max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl"
               />

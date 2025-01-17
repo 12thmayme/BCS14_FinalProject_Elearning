@@ -30,14 +30,10 @@ const Advice = () => {
             <div className="relative w-[calc(100vw-40px)] lg:w-[466px] h-[calc((100vw-40px)/1.37)] lg:h-[430px] xl:w-full xl:h-[600px] ">
               <div className="bg-primary opacity-30 w-full h-full absolute [clip-path:polygon(80%_0,_100%_20%,_100%_100%,_0_100%,_0_0)] xl:left-[-10%]"></div>
               <div className="flex items-center justify-center absolute w-[256px] md:w-[426px] h-[313px] md:h-[522px] left-[20%] lg:left-[15%] bottom-0 xl:w-[512px] xl:h-[770px]">
-                <img
-                  className="w-full  "
-                  src="./public/advice.webp"
-                  alt="image"
-                />
+                <img className="w-full  " src="/advice.webp" alt="image" />
               </div>
               <div className="absolute top-11 md:top-24 -right-8  w-16 md:w-[5rem] h-16 md:h-[5rem] xl:w-[7rem] xl:h-[7rem] xl:right-8">
-                <img className="" src="./public/cup.webp" alt="cup" />
+                <img className="" src="/cup.webp" alt="cup" />
               </div>
               <div className="absolute -bottom-6 -right-6 w-[calc(200px/1.5)] h-[calc(115px/1.5)] bg-primary xl:w-[15rem] xl:h-[10rem]">
                 <p className="text-white opacity-70 text-[10px] ml-2 mt-2 xl:text-base xl:p-3 ">
@@ -46,7 +42,7 @@ const Advice = () => {
                 <div className="overflow-hidden relative w-full -top-10 pb-[57.5%] mt-7">
                   <img
                     className="absolute w-full h-full text-transparent"
-                    src="./public/chart.png"
+                    src="/chart.png"
                     alt="chart"
                   />
                 </div>

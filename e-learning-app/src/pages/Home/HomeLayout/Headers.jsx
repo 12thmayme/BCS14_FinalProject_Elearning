@@ -70,7 +70,7 @@ export default function Headers() {
               <NavLink to="/" className="shrink-0">
                 <img
                   alt="Your Company"
-                  src="./public/logoSybersoft.png"
+                  src="/logoSybersoft.png"
                   className="h-9 md:h-12 lg:h-20 w-auto"
                 />
               </NavLink>

@@ -4,22 +4,22 @@ import Animation from "../../../../util/customs/Animation";
 const TheReasons = () => {
   const data = [
     {
-      img: "./public/homeCyber/reasons.jpg",
+      img: "/homeCyber/reasons.jpg",
       title: "Reputation",
       desc: "CyberSoft affirms its reputation by committing to 100% employment for students after graduation. This commitment is concretized by a training contract from the beginning.",
     },
     {
-      img: "./public/homeCyber/reasons_2.jpg",
+      img: "/homeCyber/reasons_2.jpg",
       title: "REALITY",
       desc: "Every hour, every minute at CyberSoft is used to build real capacity for students, not a single moment is wasted.",
     },
     {
-      img: "./public/homeCyber/reasons_3.jpg",
+      img: "/homeCyber/reasons_3.jpg",
       title: "COMMIT",
       desc: "CyberSoft only succeeds when its students succeed, therefore CyberSoft devotes all its efforts to supporting and promoting the progress of its students.",
     },
     {
-      img: "./public/homeCyber/reasons_4.jpg",
+      img: "/homeCyber/reasons_4.jpg",
       title: "SAFE",
       desc: "There is no risk in studying at CyberSoft, all commitments are guaranteed through a legal contract with the company.",
     },
