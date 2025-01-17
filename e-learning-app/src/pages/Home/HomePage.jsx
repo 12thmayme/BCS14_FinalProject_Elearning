@@ -12,7 +12,7 @@ import GetCourse from "./HomeLayout/CourseList/GetCourse";
 import Headers from "./HomeLayout/Headers";
 import CourseList from "./HomeLayout/CourseList/CourseList";
 import { twMerge } from "tailwind-merge";
-import Advice from "./HomeLayout/discover/advice";
+import Advice from "./HomeLayout/discover/Advice";
 import Evaluate from "./HomeLayout/propose/Evaluate";
 import TheReasons from "./HomeLayout/propose/TheReasons";
 import Curriculum from "./HomeLayout/propose/Curriculum";
