@@ -6,11 +6,10 @@ import YourProfile from "./YourProfile";
 import YourCourse from "./YourCourse";
 
 const FromProfile = () => {
-  const { data, error, isLoading } = useQuery({
+  const { data, error, isLoading, refetch } = useQuery({
     queryKey: ["getInfo"],
     queryFn: getInfo,
-    staleTime: 5 * 60 * 1000,
-    cacheTime: 6 * 60 * 1000,
+    staleTime: 0,
   });
 
   if (isLoading) {
@@ -19,6 +18,9 @@ const FromProfile = () => {
   if (error) {
     return <div className="alert alert-danger">{error.message}</div>;
   }
+  React.useEffect(() => {
+    refetch();
+  }, []);
   return (
     <div className="w-full bg-dark">
       <YourProfile data={data} />

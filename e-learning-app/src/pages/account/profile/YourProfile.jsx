@@ -8,7 +8,9 @@ import {
   showErrorToast,
   showSuccessToast,
 } from "../../../util/customs/CustomAlert";
+import { useNavigate } from "react-router-dom";
 const YourProfile = (props) => {
+  const navigate = useNavigate();
   const { data } = props;
   const [showPassword, setShowPassword] = useState(false);
 
@@ -20,6 +22,7 @@ const YourProfile = (props) => {
     mutationFn: updateUser,
     onSuccess: () => {
       showSuccessToast("Update successful");
+      navigate("/");
     },
     onError: (error) => {
       showErrorToast(error.response?.data || "Update failed");

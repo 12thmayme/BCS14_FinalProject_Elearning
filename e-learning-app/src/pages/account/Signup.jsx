@@ -43,118 +43,120 @@ const Signup = () => {
   });
 
   return (
-    <div className="w-[40vw] signup_right">
+    <div className="w-full md:w-[70vw] mx-auto lg:w-[60vw] pt-20 md:pt-0 signup_right">
       <h1 className="signup_heading">Sign Up</h1>
       <h2 className="signup_caption">Sign up with</h2>
-      <div className="signup-social">
+      <div className="signup-social text-sm md:text-base">
         <div className="signup-social_item">
-          <i className="fa-brands fa-google signup-social_icon"></i>
+          <i className="text-base lg:text-xl fa-brands fa-google signup-social_icon"></i>
           <span className="sign-social_text">Sign up with Google</span>
         </div>
         <div className="signup-social_item">
-          <i className="fa-brands fa-facebook-f signup-social_icon"></i>
+          <i className="text-base lg:text-xl fa-brands fa-facebook-f signup-social_icon"></i>
           <span className="sign-social_text">Sign up with Facebook</span>
         </div>
       </div>
       <form onSubmit={formik.handleSubmit}>
         {/* Account */}
-        <div className="form-group">
-          <label htmlFor="taiKhoan">Account</label>
-          <input
-            type="text"
-            className={`form-control ${
-              formik.touched.taiKhoan && formik.errors.taiKhoan
-                ? "border-red-500"
-                : ""
-            }`}
-            id="taiKhoan"
-            name="taiKhoan"
-            value={formik.values.taiKhoan}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.taiKhoan && formik.errors.taiKhoan && (
-            <p className="text-red-500">{formik.errors.taiKhoan}</p>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="matKhau">Password</label>
-          <div className="relative">
+        <div className="text-sm md:text-base">
+          <div className="form-group ">
+            <label htmlFor="taiKhoan">Account</label>
             <input
-              type={showPassword ? "text" : "password"}
+              type="text"
               className={`form-control ${
-                formik.touched.matKhau && formik.errors.matKhau
+                formik.touched.taiKhoan && formik.errors.taiKhoan
                   ? "border-red-500"
                   : ""
               }`}
-              id="matKhau"
-              name="matKhau"
-              value={formik.values.matKhau}
+              id="taiKhoan"
+              name="taiKhoan"
+              value={formik.values.taiKhoan}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
-            <div
-              onClick={togglePasswordVisibility}
-              className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-700"
-            >
-              {showPassword ? <FaRegEye /> : <FaEyeSlash />}
-            </div>
+            {formik.touched.taiKhoan && formik.errors.taiKhoan && (
+              <p className="text-red-500">{formik.errors.taiKhoan}</p>
+            )}
           </div>
-          {formik.touched.matKhau && formik.errors.matKhau && (
-            <p className="text-red-500">{formik.errors.matKhau}</p>
-          )}
+          <div className="form-group">
+            <label htmlFor="matKhau">Password</label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                className={`form-control ${
+                  formik.touched.matKhau && formik.errors.matKhau
+                    ? "border-red-500"
+                    : ""
+                }`}
+                id="matKhau"
+                name="matKhau"
+                value={formik.values.matKhau}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              <div
+                onClick={togglePasswordVisibility}
+                className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? <FaRegEye /> : <FaEyeSlash />}
+              </div>
+            </div>
+            {formik.touched.matKhau && formik.errors.matKhau && (
+              <p className="text-red-500">{formik.errors.matKhau}</p>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="hoTen">Full Name</label>
+            <input
+              type="text"
+              className="form-control"
+              id="hoTen"
+              name="hoTen"
+              value={formik.values.hoTen}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.hoTen && formik.errors.hoTen && (
+              <p className="text-red-500">{formik.errors.hoTen}</p>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="soDT">Phone</label>
+            <input
+              type="text"
+              className="form-control"
+              id="soDT"
+              name="soDT"
+              value={formik.values.soDT}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="maNhom">Group Code</label>
+            <input
+              type="text"
+              className="form-control"
+              id="maNhom"
+              name="maNhom"
+              value={formik.values.maNhom}
+              onChange={formik.handleChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              className="form-control"
+              id="email"
+              name="email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+          </div>
         </div>
-        <div className="form-group">
-          <label htmlFor="hoTen">Full Name</label>
-          <input
-            type="text"
-            className="form-control"
-            id="hoTen"
-            name="hoTen"
-            value={formik.values.hoTen}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.hoTen && formik.errors.hoTen && (
-            <p className="text-red-500">{formik.errors.hoTen}</p>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="soDT">Phone</label>
-          <input
-            type="text"
-            className="form-control"
-            id="soDT"
-            name="soDT"
-            value={formik.values.soDT}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="maNhom">Group Code</label>
-          <input
-            type="text"
-            className="form-control"
-            id="maNhom"
-            name="maNhom"
-            value={formik.values.maNhom}
-            onChange={formik.handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            className="form-control"
-            id="email"
-            name="email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-        </div>
-        <div className="flex justify-between mt-5 text-white">
+        <div className="flex justify-between mt-5 text-white text-sm md:text-base">
           <button type="submit" className="px-8 py-4 rounded-3xl bg-blue-700">
             {mutation.isLoading ? "Registering..." : "Register"}
           </button>

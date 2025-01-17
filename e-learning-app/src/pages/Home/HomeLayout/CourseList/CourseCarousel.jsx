@@ -35,7 +35,7 @@ const CourseCarousel = (props) => {
     infinite: true,
     speed: 500,
     slidesToShow: 4,
-    slidesToScroll: 3,
+    slidesToScroll: 1,
     arrows: true,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
@@ -56,7 +56,7 @@ const CourseCarousel = (props) => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-0">
       <Slider {...settings}>
         {data?.map((course) => {
           return <CarCourse course={course} />;

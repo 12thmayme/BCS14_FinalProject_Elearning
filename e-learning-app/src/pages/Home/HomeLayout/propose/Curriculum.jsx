@@ -21,8 +21,8 @@ const Curriculum = () => {
     },
   ];
   return (
-    <div className="container">
-      <div className="p-5">
+    <div className="container ">
+      <div className="p-5 overflow-hidden">
         <Animation
           animation={{ x: 0, opacity: 1 }}
           initial={{ x: -150, opacity: 0 }}
@@ -51,8 +51,8 @@ const Curriculum = () => {
                         </p>
                       </div>
                       <div className="px-5 py-3 bg-dark-2 ">
-                        <p className=" text-lg lg:text-xl ">{item.title}</p>
-                        <p className="text-sm lg:text-base font-light">
+                        <p className=" text-lg lg:text-2xl ">{item.title}</p>
+                        <p className="text-sm lg:text-lg font-light">
                           {item.desc}
                         </p>
                       </div>

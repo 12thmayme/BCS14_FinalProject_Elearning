@@ -75,7 +75,7 @@ const Evaluate = () => {
     prevArrow: <PrevArrow />,
   };
   return (
-    <section className="w-full h-[70vh] relative">
+    <section className="w-full h-[23rem] md:h-[35rem] lg:h-[40rem] relative mb-2 md:mb-5 lg:mb-8">
       <div className="bg-bannerEvaluate w-full h-full bg-cover bg-center box-border absolute ">
         <div className="absolute left-0 top-0 w-full h-full bg-black opacity-60 "></div>
         <div className="container">

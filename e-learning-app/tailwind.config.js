@@ -30,9 +30,10 @@ export default {
         },
       },
       backgroundImage: {
-        "detail-course": "url('/public/learning-path-detail-background.png')",
-        bannerEvaluate: 'url("./public/banner_evaluate.avif")',
-        bannerLogin: 'url("./public/banner.evaluate3.avif")',
+        "detail-course": "url('/learning-path-detail-background.png')",
+        bannerEvaluate: 'url("/banner_evaluate.avif")',
+        bannerLogin: 'url("/banner.evaluate3.avif")',
+        bannerHome: 'url("/bannerelearning.webp")',
       },
     },
   },

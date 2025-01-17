@@ -1,43 +1,42 @@
-import React, { useState } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import React, { useState } from "react";
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
 
 // Admin Pages
-import CourseManagement from "./pages/admin/CourseManagement";
-import UserManagement from "./pages/admin/UserManangement";
 import AdminDashboard from "./pages/admin/AdminDashBoard";
-import UserEnrollmentManagement from "./pages/admin/UserEnrollmentManagement";
 import CourseEnrollmentManagement from "./pages/admin/CourseEnrollmentManagement";
+import CourseManagement from "./pages/admin/CourseManagement";
+import UserEnrollmentManagement from "./pages/admin/UserEnrollmentManagement";
+import UserManagement from "./pages/admin/UserManangement";
 import AdminTemplate from "./templates/AdminTemplate";
 
 // Public Pages
-import HomeMaster from "./pages/pageMaster/HomeMaster";
-import HomePage from "./pages/Home/HomePage";
-import UserMaster from "./pages/pageMaster/UserMaster";
 import Login from "./pages/account/Login";
-import Signup from "./pages/account/Signup";
-import Detail from "./pages/detail/Detail";
+import FromProfile from "./pages/account/profile/FromProfile";
 import Profile from "./pages/account/profile/Profile";
+import Signup from "./pages/account/Signup";
 import Contact from "./pages/contact/Contact";
 import Course from "./pages/courses/Course";
 import CourseCatalog from "./pages/courses/CourseCatalog";
+import Detail from "./pages/detail/Detail";
+import HomePage from "./pages/Home/HomePage";
+import HomeMaster from "./pages/pageMaster/HomeMaster";
+import UserMaster from "./pages/pageMaster/UserMaster";
 import Profiles from "./pages/user/Profile";
-import FromProfile from "./pages/account/profile/FromProfile";
 
 // Shared Components
 import Auth from "./components/Auth";
 import ProtectedRoute from "./components/ProtectedRoute";
-import CustomsIsPending from "./util/customs/CustomsIsPending";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import "./sass/main.scss";
 import "./main.js";
+import "./sass/main.scss";
 
 const queryClient = new QueryClient();
 

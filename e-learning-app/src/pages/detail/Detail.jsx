@@ -29,6 +29,7 @@ const Detail = () => {
     mutationFn: (values) => registerCourse(values),
     onSuccess: () => {
       showSuccessToast("Course register successfully!");
+      navigate("/course");
     },
     onError: (err) => {
       showErrorToast({ error: err.message });

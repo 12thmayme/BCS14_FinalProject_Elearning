@@ -11,12 +11,14 @@ import {
   showSuccessToast,
 } from "../../../util/customs/CustomAlert";
 import CustomsIsPending from "../../../util/customs/CustomsIsPending";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const YourCourse = (props) => {
+  const navigate = useNavigate();
   const { chiTietKhoaHocGhiDanh } = props.data;
   const queryClient = useQueryClient();
 
+  // Đảm bảo danh sách mã khóa học được cập nhật sau invalidate
   const codeCourseList = chiTietKhoaHocGhiDanh?.map((item) => item.maKhoaHoc);
 
   const courseQueries = useQueries({
@@ -29,16 +31,15 @@ const YourCourse = (props) => {
 
   const mutation = useMutation({
     mutationFn: (values) => cancelCourse(values),
-    onSuccess: () => {
-      showSuccessToast("Course cancel successfully!");
-      queryClient.invalidateQueries({ queryKey: ["getDetailCourse"] }); // Làm mới dữ liệu
+    onSuccess: (_, variables) => {
+      showSuccessToast("Course canceled successfully!");
     },
     onError: (err) => {
       showErrorToast({ error: err.message });
     },
   });
 
-  const isPending = courseQueries.some((query) => query.isPending);
+  const isPending = courseQueries.some((query) => query.isLoading);
   const hasError = courseQueries.some((query) => query.error);
 
   if (isPending) {
@@ -50,7 +51,9 @@ const YourCourse = (props) => {
     console.log(error);
     return showErrorToast({ error });
   }
+
   const user = localService.getUser();
+
   const handleCancelCourse = (maKhoaHoc) => {
     mutation.mutate({
       maKhoaHoc,
@@ -87,7 +90,9 @@ const YourCourse = (props) => {
                 </NavLink>
                 <button
                   className={styles.buttonDelete}
-                  onClick={() => handleCancelCourse(result.data?.maKhoaHoc)}
+                  onClick={() => {
+                    handleCancelCourse(result.data?.maKhoaHoc);
+                  }}
                 >
                   <FaRegTrashCan />
                 </button>

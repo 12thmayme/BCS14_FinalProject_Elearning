@@ -40,22 +40,24 @@ const Login = () => {
 
   return (
     <div>
-      <div className="w-[35vw] signup_right">
+      <div className="w-full mx-auto md:w-[70vw] lg:w-[50vw] signup_right">
         <h1 className="signup_heading">Sign In</h1>
         <h2 className="signup_caption">Sign in with</h2>
         <div className="signup-social">
-          <div className="signup-social_item">
-            <i className="fa-brands fa-google signup-social_icon"></i>
+          <div className="signup-social_item text-sm lg:text-base">
+            <i className="text-base fa-brands fa-google signup-social_icon"></i>
             <span className="sign-social_text">Sign in with Google</span>
           </div>
-          <div className="signup-social_item">
-            <i className="fa-brands fa-facebook-f signup-social_icon"></i>
+          <div className="signup-social_item text-sm lg:text-base">
+            <i className="text-base  fa-brands fa-facebook-f signup-social_icon"></i>
             <span className="sign-social_text">Sign in with Facebook</span>
           </div>
         </div>
         <form onSubmit={formik.handleSubmit}>
           <div className="form-group">
-            <label htmlFor="taiKhoan">Account</label>
+            <label classname="text-sm md:text-base" htmlFor="taiKhoan">
+              Account
+            </label>
             <input
               type="text"
               className={`form-control ${
@@ -70,17 +72,21 @@ const Login = () => {
               onBlur={formik.handleBlur}
             />
             {formik.touched.taiKhoan && formik.errors.taiKhoan && (
-              <p className="text-red-500">{formik.errors.taiKhoan}</p>
+              <p className="text-red-500 text-sm lg:text-base">
+                {formik.errors.taiKhoan}
+              </p>
             )}
           </div>
           <div className="form-group">
-            <label htmlFor="matKhau">Password</label>
+            <label classname="text-sm md:text-base" htmlFor="matKhau">
+              Password
+            </label>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
                 className={`form-control ${
                   formik.touched.matKhau && formik.errors.matKhau
-                    ? "border-red-500"
+                    ? "border-red-500 "
                     : ""
                 }`}
                 id="matKhau"
@@ -97,22 +103,24 @@ const Login = () => {
               </div>
             </div>
             {formik.touched.matKhau && formik.errors.matKhau && (
-              <p className="text-red-500">{formik.errors.matKhau}</p>
+              <p className="text-red-500 text-sm lg:text-base">
+                {formik.errors.matKhau}
+              </p>
             )}
           </div>
 
           {/* Nút Đăng nhập & Điều hướng */}
-          <div className="flex justify-between items-center mt-5 text-white">
+          <div className="flex justify-between items-center mt-5 text-white text-sm md:text-base">
             <button
               type="submit"
-              className="px-8 py-4 rounded-3xl bg-blue-700"
+              className="px-8 py-4 rounded-3xl bg-blue-700 "
               style={{ padding: "15px 40px" }}
               disabled={mutation.isLoading}
             >
               {mutation.isLoading ? "Logging in..." : "Login"}
             </button>
             <NavLink
-              className="text-lg text-blue-500 flex items-center"
+              className=" text-blue-500 flex items-center"
               to="/users/sign-up"
             >
               <FaArrowLeft />
