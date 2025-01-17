@@ -1,41 +1,43 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import React, { useState } from "react";
 import {
-  Navigate,
-  Route,
   BrowserRouter as Router,
   Routes,
+  Route,
+  Navigate,
 } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // Admin Pages
-import AdminDashboard from "./pages/admin/AdminDashBoard";
-import CourseEnrollmentManagement from "./pages/admin/CourseEnrollmentManagement";
 import CourseManagement from "./pages/admin/CourseManagement";
-import UserEnrollmentManagement from "./pages/admin/UserEnrollmentManagement";
 import UserManagement from "./pages/admin/UserManangement";
+import AdminDashboard from "./pages/admin/AdminDashBoard";
+import UserEnrollmentManagement from "./pages/admin/UserEnrollmentManagement";
+import CourseEnrollmentManagement from "./pages/admin/CourseEnrollmentManagement";
+import AdminTemplate from "./templates/AdminTemplate";
 
 // Public Pages
+import HomeMaster from "./pages/pageMaster/HomeMaster";
+import HomePage from "./pages/Home/HomePage";
+import UserMaster from "./pages/pageMaster/UserMaster";
 import Login from "./pages/account/Login";
-import FromProfile from "./pages/account/profile/FromProfile";
-import Profile from "./pages/account/profile/Profile";
 import Signup from "./pages/account/Signup";
-import Contact from "./pages/contact/contact";
+import Detail from "./pages/detail/Detail";
+import Profile from "./pages/account/profile/Profile";
+import Contact from "./pages/contact/Contact";
 import Course from "./pages/courses/Course";
 import CourseCatalog from "./pages/courses/CourseCatalog";
-import Detail from "./pages/detail/Detail";
-import HomePage from "./pages/Home/HomePage";
-import HomeMaster from "./pages/pageMaster/HomeMaster";
-import UserMaster from "./pages/pageMaster/UserMaster";
+import Profiles from "./pages/user/Profile";
+import FromProfile from "./pages/account/profile/FromProfile";
 
 // Shared Components
 import Auth from "./components/Auth";
 import ProtectedRoute from "./components/ProtectedRoute";
+import CustomsIsPending from "./util/customs/CustomsIsPending";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import "./main.js";
 import "./sass/main.scss";
-import AdminTemplates from "./templates/AdminTemplates.jsx";
+import "./main.js";
 
 const queryClient = new QueryClient();
 
@@ -71,9 +73,9 @@ function App() {
               <Route path="sign-up" element={<Signup />}></Route>
             </Route>
             <Route path="profile" element={<Profile />}>
-              <Route path="" element={<FromProfile />} />
-              {/* <Route path="/your-profile" element={<YourProfile />} /> */}
+              <Route path="" element={<FromProfile />}></Route>
             </Route>
+            <Route path="profile-s" element={<Profiles />}></Route>
           </Route>
 
           {/* Admin Routes */}
@@ -81,7 +83,7 @@ function App() {
             path="/admin"
             element={
               <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <AdminTemplates />
+                <AdminTemplate />
               </ProtectedRoute>
             }
           >
