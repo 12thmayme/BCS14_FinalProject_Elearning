@@ -1,22 +1,5 @@
+import { FolderIcon, HomeIcon, UsersIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
-import {
-  Dialog,
-  DialogPanel,
-  Disclosure,
-  DisclosureButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-} from "@headlessui/react";
-import {
-  Bars3Icon,
-  BellIcon,
-  XMarkIcon,
-  FolderIcon,
-  HomeIcon,
-  UsersIcon,
-} from "@heroicons/react/24/outline";
 import { NavLink } from "react-router-dom";
 const Profiles = () => {
   const [open, setOpen] = useState(true);

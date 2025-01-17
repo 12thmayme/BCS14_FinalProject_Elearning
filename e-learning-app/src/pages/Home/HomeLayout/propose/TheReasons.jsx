@@ -1,4 +1,5 @@
 import React from "react";
+import Animation from "../../../../util/customs/Animation";
 
 const TheReasons = () => {
   const data = [
@@ -26,27 +27,42 @@ const TheReasons = () => {
   return (
     <div className="container">
       <div className="my-5 px-5 md:my-10 lg:my-20 ">
-        <h2 className="my-3 lg:pb-8 text-xl md:text-3xl lg:text-4xl text-center">
-          {" "}
-          <span className="text-primary">4 REASONS STUDENTS CHOOSE </span>
-          CYBERSOFT
-        </h2>
+        <Animation
+          animation={{ y: 0, opacity: 1 }}
+          initial={{ y: 100, opacity: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <h2 className="my-3 lg:pb-8 text-xl md:text-3xl lg:text-4xl text-center">
+            {" "}
+            <span className="text-primary">4 REASONS STUDENTS CHOOSE </span>
+            CYBERSOFT
+          </h2>
+        </Animation>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-5 p-3 m-3">
           {data.map((item, index) => {
             return (
-              <div className="col-span-1 bg-dark " key={index}>
-                <img
-                  className="object-cover w-full h-[30vh]"
-                  src={item.img}
-                  alt=""
-                />
-                <div className="px-3">
-                  <h3 className="text-center text-primary py-3">
-                    {item.title}
-                  </h3>
-                  <p className="lg:text-xl font-light pb-3">{item.desc}</p>
+              <Animation
+                animation={{ y: 0, opacity: 1 }}
+                initial={{ y: 100, opacity: 0 }}
+                transition={{ duration: 0.8 }}
+                index={index}
+                delay={0.5}
+                key={index}
+              >
+                <div className=" col-span-1 h-full bg-dark ">
+                  <img
+                    className="object-cover w-full h-[30vh]"
+                    src={item.img}
+                    alt=""
+                  />
+                  <div className="px-3">
+                    <h3 className="text-center text-primary py-3">
+                      {item.title}
+                    </h3>
+                    <p className="lg:text-xl font-light pb-3">{item.desc}</p>
+                  </div>
                 </div>
-              </div>
+              </Animation>
             );
           })}
         </div>

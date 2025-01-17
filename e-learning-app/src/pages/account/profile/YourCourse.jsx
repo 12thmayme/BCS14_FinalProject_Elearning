@@ -1,15 +1,17 @@
 import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
 import React from "react";
+import { FaRegEye, FaRegTrashCan } from "react-icons/fa6";
+import { localService } from "../../../api/localService";
 import {
   cancelCourse,
   getDetailCourse,
 } from "../../../util/API/Product/ProductAPI";
-import CustomsIsPending from "../../../util/customs/CustomsIsPending";
 import {
   showErrorToast,
   showSuccessToast,
 } from "../../../util/customs/CustomAlert";
-import { localService } from "../../../api/localService";
+import CustomsIsPending from "../../../util/customs/CustomsIsPending";
+import { NavLink } from "react-router-dom";
 
 const YourCourse = (props) => {
   const { chiTietKhoaHocGhiDanh } = props.data;
@@ -63,26 +65,31 @@ const YourCourse = (props) => {
       </h2>
       <table width="100%">
         <thead>
-          <tr>
-            <th style={styles.th}>#</th>
-            <th style={styles.th}>Course Name</th>
-            <th style={styles.th}>Course ID</th>
-            <th style={styles.th}>Actions</th>
+          <tr className="text-sm">
+            <th className={styles.th}>#</th>
+            <th className={styles.th}>Course Name</th>
+            <th className={styles.th}>Course ID</th>
+            <th className={styles.th}>Actions</th>
           </tr>
         </thead>
         <tbody>
           {courseQueries.map((result, index) => (
-            <tr key={codeCourseList[index]} style={styles.tr}>
-              <td style={styles.td}>{index + 1}</td>
-              <td style={styles.td}>{result.data?.tenKhoaHoc || "N/A"}</td>
-              <td style={styles.td}>{result.data?.maKhoaHoc || "N/A"}</td>
-              <td style={styles.td}>
-                <button style={styles.button}>View Details</button>
+            <tr key={codeCourseList[index]} className={styles.tr}>
+              <td className={styles.td}>{index + 1}</td>
+              <td className={styles.td}>{result.data?.tenKhoaHoc || "N/A"}</td>
+              <td className={styles.td}>{result.data?.maKhoaHoc || "N/A"}</td>
+              <td className="text-sm md:text-base lg:text-lg flex justify-center items-center border-b-2 py-2">
+                <NavLink
+                  to={`/detail/${result.data?.maKhoaHoc}`}
+                  className={styles.button}
+                >
+                  <FaRegEye />
+                </NavLink>
                 <button
-                  style={styles.buttonDelete}
+                  className={styles.buttonDelete}
                   onClick={() => handleCancelCourse(result.data?.maKhoaHoc)}
                 >
-                  Delete Course
+                  <FaRegTrashCan />
                 </button>
               </td>
             </tr>
@@ -94,38 +101,13 @@ const YourCourse = (props) => {
 };
 
 const styles = {
-  th: {
-    backgroundColor: "#f4f4f4",
-    padding: "10px",
-    border: "1px solid #ddd",
-    textAlign: "left",
-  },
-  td: {
-    padding: "10px",
-    border: "1px solid #ddd",
-  },
-  tr: {
-    ":nth-child(even)": {
-      backgroundColor: "#f9f9f9",
-    },
-  },
-  button: {
-    padding: "5px 10px",
-    backgroundColor: "#007BFF",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-  buttonDelete: {
-    marginLeft: "5px",
-    padding: "5px 10px",
-    backgroundColor: "#FF0033",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
+  th: "bg-gray-100 p-2 border border-gray-300 text-left text-sm md:text-base lg:text-lg",
+  td: "p-2 border border-gray-300 text-xs md:text-sm lg:text-base",
+  tr: "odd:bg-white even:bg-gray-100",
+  button:
+    "px-3 py-2 bg-blue-500 text-white rounded cursor-pointer hover:bg-blue-600",
+  buttonDelete:
+    "ml-2 px-3 py-2 bg-red-600 text-white rounded cursor-pointer hover:bg-red-700",
 };
 
 export default YourCourse;

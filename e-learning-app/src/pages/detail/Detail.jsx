@@ -28,7 +28,7 @@ const Detail = () => {
   const mutation = useMutation({
     mutationFn: (values) => registerCourse(values),
     onSuccess: () => {
-      showSuccessToast({ message: "Course register successfully!" });
+      showSuccessToast("Course register successfully!");
     },
     onError: (err) => {
       showErrorToast({ error: err.message });
@@ -75,7 +75,7 @@ const Detail = () => {
                 Back to learning path
               </NavLink>
               <div className="lg:flex justify-between">
-                <div className="p-5">
+                <div className="p-5 lg:w-[70%]">
                   <h2 className="text-3xl md:text-5xl lg:text-8xl  mt-5 md:mt-8 font-semibold">
                     {data.tenKhoaHoc}
                   </h2>
@@ -89,9 +89,9 @@ const Detail = () => {
                     </h3>
                   </div>
                 </div>
-                <div className="bg-white py-[2px] w-[40%] rounded-2xl">
+                <div className="bg-white py-[2px] w-[90%] lg:w-[30%] lg:py-5 h-full rounded-2xl mx-auto">
                   <div className="w-[95%] mx-auto mt-5 md:mt-10 rounded-xl">
-                    <div className="w-full  ">
+                    <div className="w-full lg:w-[90%] mx-auto">
                       <FallbackImage
                         src={data.hinhAnh}
                         className="w-full h-[25vh] lg:h-[15vh] bg-cover rounded-3xl "
@@ -113,7 +113,7 @@ const Detail = () => {
                         <div className=" mx-auto flex items-center justify-between gap-3 mt-2">
                           <button
                             onClick={handleRegisterCourse}
-                            className=" mx-auto  w-full  py-3 lg:py-5 text-xl bg-primary rounded-full cursor-pointer font-medium"
+                            className="mx-auto w-full py-3 lg:py-5 text-xl bg-primary rounded-full cursor-pointer font-medium"
                           >
                             Buy now
                           </button>
