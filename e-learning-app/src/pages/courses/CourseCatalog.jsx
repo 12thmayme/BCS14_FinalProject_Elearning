@@ -42,7 +42,7 @@ const CourseCatalog = () => {
   });
   return (
     <main className="container mx-auto p-4">
-      <div className="flex gap-4 justify-center mb-8 pt-28">
+      <div className="flex gap-4 justify-center mb-8 pt-20 md:pt-28 lg:pt-32 flex-wrap">
         {listCourse.map((item) => (
           <button
             key={item.value}
