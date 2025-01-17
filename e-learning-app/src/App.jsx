@@ -14,7 +14,6 @@ import CourseEnrollmentManagement from "./pages/admin/CourseEnrollmentManagement
 import CourseManagement from "./pages/admin/CourseManagement";
 import UserEnrollmentManagement from "./pages/admin/UserEnrollmentManagement";
 import UserManagement from "./pages/admin/UserManangement";
-import AdminTemplate from "./templates/AdminTemplate.jsx";
 
 // Public Pages
 import Login from "./pages/account/Login";
@@ -36,6 +35,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./main.js";
 import "./sass/main.scss";
+import AdminTemplates from "./templates/AdminTemplates.jsx";
 
 const queryClient = new QueryClient();
 
@@ -81,7 +81,7 @@ function App() {
             path="/admin"
             element={
               <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <AdminTemplate />
+                <AdminTemplates />
               </ProtectedRoute>
             }
           >
