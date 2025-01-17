@@ -56,10 +56,10 @@ const YourProfile = (props) => {
             <h2 className="text-secondary font-semibold">
               Your <span>profile</span>
             </h2>
-            <p className="text-sm lg:text-lg font-thin md:mt-2 ">
+            <p className="text-sm md:text-base lg:text-lg font-thin md:mt-2 ">
               This will be shared with other students
             </p>
-            <p className="text-sm lg:text-lg font-thin md:mb-5">
+            <p className="text-sm md:text-base lg:text-lg font-thin md:mb-5">
               And you can edit your profile here
             </p>
           </div>
@@ -71,7 +71,7 @@ const YourProfile = (props) => {
                 <div className="form-group">
                   <label
                     htmlFor={item.id}
-                    className="block text-sm/6 md:text-sm lg:text-base font-medium text-gray-900"
+                    className="block text-sm md:text-base lg:text-lg mb-0 font-semibold text-gray-900"
                   >
                     {item.title}
                   </label>
@@ -92,7 +92,7 @@ const YourProfile = (props) => {
                         formik.touched[item.name] && formik.errors[item.name]
                           ? "border-red-500"
                           : "border-gray-300"
-                      }`}
+                      } text-sm md:text-base`}
                     />
                     {item.type === "password" && (
                       <div

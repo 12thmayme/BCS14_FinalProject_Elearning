@@ -12,10 +12,11 @@ import { CiBellOn } from "react-icons/ci";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { HiMenu } from "react-icons/hi";
 import { HiMiniXMark } from "react-icons/hi2";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { localService } from "../../../api/localService";
 import Avatar, { Avatars } from "../../../util/customs/CustomAvatar";
 export default function Headers() {
+  const navigate = useNavigate();
   const user = localService.getUser();
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -29,11 +30,11 @@ export default function Headers() {
     };
   }, []);
   return (
-    <header className={`${scrolled ? "scrolled" : ""}`}>
+    <header className={`${scrolled ? "scrolled" : ""} header`}>
       <div className="navbar-top hidden md:block  ">
-        <ul className="navbar-top_social">
+        <ul className="navbar-top_social  text-xs lg:text-base">
           <li>
-            <NavLink to="./course-list">Blog</NavLink>
+            <NavLink to="">Blog</NavLink>
           </li>
           <li>
             <NavLink>Oline learning CyberSoft.vn</NavLink>
@@ -62,7 +63,7 @@ export default function Headers() {
           </li>
         </ul>
       </div>
-      <Disclosure as="nav" className="navbar">
+      <Disclosure as="nav" className="navbar lg:h-20 lg:pt-2">
         <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
           <div className="relative flex h-16 items-center justify-between">
             <div className="flex items-center md:px-2 lg:px-0">
@@ -70,18 +71,18 @@ export default function Headers() {
                 <img
                   alt="Your Company"
                   src="./public/logoSybersoft.png"
-                  className="h-6 md:h-10 lg:h-16 w-auto"
+                  className="h-9 md:h-12 lg:h-20 w-auto"
                 />
               </NavLink>
               <div className="hidden lg:ml-6 lg:block">
-                <div className="flex space-x-4">
-                  <NavLink href="#" className="rounded-md px-3 py-2 ">
+                <div className="flex space-x-4 lg:text-xl">
+                  <NavLink to="/course" className="rounded-md px-3 py-2 ">
                     Courses
                   </NavLink>
-                  <NavLink href="#" className="rounded-md px-3 py-2 ">
+                  <NavLink to="/blog" className="rounded-md px-3 py-2 ">
                     Blog
                   </NavLink>
-                  <NavLink href="#" className="rounded-md px-3 py-2 ">
+                  <NavLink to="/contact" className="rounded-md px-3 py-2 ">
                     Contact
                   </NavLink>
                 </div>
@@ -94,17 +95,17 @@ export default function Headers() {
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
-                  className="col-start-1 row-start-1 block w-full rounded-md bg-gray-700 py-1.5 pl-10 pr-3 text-base text-white outline-none placeholder:text-gray-400 focus:bg-white focus:text-gray-900 focus:placeholder:text-gray-400 sm:text-sm/6"
+                  className="col-start-1 row-start-1 block w-full rounded-md bg-gray-700 py-1.5 pl-8 md:pl-10 pr-3 text-sm md:text-base lg:text-xl lg:py-3 text-white outline-none placeholder:text-gray-400 focus:bg-white  focus:text-gray-900 focus:placeholder:text-gray-400 sm:text-sm/6"
                 />
                 <FaMagnifyingGlass
                   aria-hidden="true"
-                  className="pointer-events-none col-start-1 row-start-1 ml-3 size-5 self-center text-gray-400"
+                  className="pointer-events-none col-start-1 row-start-1 ml-3  size-4 md:size-5 lg:size-6 self-center text-gray-400"
                 />
               </div>
             </div>
             <div className="flex lg:hidden bg-gray-800">
               {/* Mobile menu button */}
-              <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+              <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400  hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                 <span className="absolute -inset-0.5" />
                 <span className="sr-only">Open main menu</span>
                 <HiMenu
@@ -160,17 +161,10 @@ export default function Headers() {
                     </MenuItem>
                     <MenuItem>
                       <NavLink
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
-                      >
-                        Settings
-                      </NavLink>
-                    </MenuItem>
-                    <MenuItem>
-                      <NavLink
                         onClick={() => {
                           localService.removeUser();
                           localService.removeAccessToken();
+                          navigate("/");
                         }}
                         className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
                       >
@@ -183,12 +177,11 @@ export default function Headers() {
             </div>
           </div>
         </div>
-
-        <DisclosurePanel className="lg:hidden bg-gray-800">
+        <DisclosurePanel className="lg:hidden bg-gray-800 -mt-2">
           <div className="space-y-1 px-2 pb-3 pt-2">
             <NavLink
               as="a"
-              href="#"
+              to="course"
               className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
             >
               Courses
@@ -231,24 +224,20 @@ export default function Headers() {
               </button>
             </div>
             <div className="mt-3 space-y-1 px-2">
-              <DisclosureButton
+              <NavLink
                 as="a"
-                href="#"
+                to={user ? "/users/profile" : "/users/login"}
                 className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
               >
-                Your Profile
-              </DisclosureButton>
-              <DisclosureButton
-                as="a"
-                href="#"
-                className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-              >
-                Settings
-              </DisclosureButton>
+                {user ? "Your Profile" : "Sign in"}
+              </NavLink>
+
               <DisclosureButton
                 as="a"
                 onClick={() => {
                   localService.removeUser();
+                  localService.removeAccessToken();
+                  navigate("/");
                 }}
                 className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
               >

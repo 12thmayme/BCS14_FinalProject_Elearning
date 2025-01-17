@@ -3,6 +3,7 @@ import React from "react";
 import { getCourseCatalog } from "../../../../util/API/Product/ProductAPI";
 import CustomsIsPending from "../../../../util/customs/CustomsIsPending";
 import { NavLink, useNavigate } from "react-router-dom";
+import Animation from "../../../../util/customs/Animation";
 
 const TrainingCatalog = () => {
   const navigate = useNavigate();
@@ -29,25 +30,40 @@ const TrainingCatalog = () => {
 
   return (
     <section className="container my-10 px-5">
-      <h2 className="mb-5 md:mb-10">
-        TRAINING PROGRAMS <span> AT CYBERSOFT</span>{" "}
-      </h2>
+      <Animation
+        animation={{ x: 0, opacity: 1 }}
+        initial={{ x: 200, opacity: 0 }}
+        transition={{ duration: 0.8 }}
+        delay={0.5}
+      >
+        <h2 className="mb-5 md:mb-10">
+          TRAINING PROGRAMS <span> AT CYBERSOFT</span>{" "}
+        </h2>
+      </Animation>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data?.map((item) => (
-          <div
+        {data?.map((item, index) => (
+          <Animation
+            animation={{ rotate: 0, opacity: 1 }}
+            initial={{ rotate: 90, opacity: 0 }}
+            transition={{ duration: 0.8 }}
+            delay={1}
             key={item.maDanhMuc}
-            onClick={() =>
-              navigate(`/course-catalog?category=${item.maDanhMuc}`)
-            }
-            className="p-4 border border-gray-300 rounded-lg shadow-md text-center"
+            index={index}
           >
-            <img
-              src={imageMap[item.maDanhMuc] || "./public/default.jpeg"}
-              alt={item.tenDanhMuc}
-              className="w-full h-40 lg:h-50 object-cover mb-4 rounded-md"
-            />
-            <h3 className="text-lg font-semibold">{item.tenDanhMuc}</h3>
-          </div>
+            <div
+              onClick={() =>
+                navigate(`/course-catalog?category=${item.maDanhMuc}`)
+              }
+              className="p-4 border border-gray-300 rounded-lg shadow-md text-center"
+            >
+              <img
+                src={imageMap[item.maDanhMuc] || "./public/default.jpeg"}
+                alt={item.tenDanhMuc}
+                className="w-full h-40 lg:h-50 object-cover mb-4 rounded-md"
+              />
+              <h3 className="text-lg font-semibold">{item.tenDanhMuc}</h3>
+            </div>
+          </Animation>
         ))}
       </div>
     </section>

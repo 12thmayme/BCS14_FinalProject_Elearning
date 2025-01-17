@@ -1,7 +1,7 @@
 import axios from "axios";
 import { showErrorToast } from "../customs/CustomAlert";
 
-export const DOMAIN = "https://elearning0706.cybersoft.edu.vn";
+export const DOMAIN = import.meta.env.VITE_DOMAIN;
 export const http = axios.create({
   baseURL: DOMAIN,
   timeout: 3000,

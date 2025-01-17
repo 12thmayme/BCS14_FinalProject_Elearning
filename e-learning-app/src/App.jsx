@@ -38,6 +38,8 @@ import CustomsIsPending from "./util/customs/CustomsIsPending";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./sass/main.scss";
 import "./main.js";
+import YourCourse from "./pages/account/profile/YourCourse.jsx";
+import YourProfile from "./pages/account/profile/YourProfile.jsx";
 
 const queryClient = new QueryClient();
 
@@ -55,8 +57,6 @@ function App() {
             element={<Auth setIsAuthenticated={setIsAuthenticated} />}
           />
           <Route path="/register" element={<Auth isRegister />} />
-          <Route path="/users/login" element={<Login />} />
-          <Route path="/users/sign-up" element={<Signup />} />
 
           {/* Public Routes */}
           <Route path="/" element={<HomeMaster />}>
@@ -69,11 +69,15 @@ function App() {
           </Route>
 
           {/* User Routes */}
-          <Route path="/users" element={<UserMaster />}>
-            <Route path="profile" element={<Profile />}>
-              <Route index element={<FromProfile />} />
+          <Route path="users">
+            <Route path="" element={<UserMaster />}>
+              <Route index path="login" element={<Login />} />
+              <Route path="sign-up" element={<Signup />}></Route>
             </Route>
-            <Route path="profile-s" element={<Profiles />} />
+            <Route path="profile" element={<Profile />}>
+              <Route path="" element={<FromProfile />} />
+              {/* <Route path="/your-profile" element={<YourProfile />} /> */}
+            </Route>
           </Route>
 
           {/* Admin Routes */}
