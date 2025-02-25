@@ -68,7 +68,7 @@ const Contact = () => {
           </div>
           <section className=" relative pb-[25.5%] mt-3 md:mt-0">
             <div className="flex items-center justify-center flex-col absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] font-thin text-center">
-              <h2 className="text-xl md:text-3xl lg:text-8xl font-medium">
+              <h2 className="text-xl md:text-3xl lg:text-8xl font-bold">
                 Contact <span className="text-primary">Us</span>{" "}
               </h2>
               <p className="text-[12px] md:max-w-[80%] lg:text-2xl">

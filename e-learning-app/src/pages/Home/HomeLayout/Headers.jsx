@@ -79,8 +79,8 @@ export default function Headers() {
                   <NavLink to="/course" className="rounded-md px-3 py-2 ">
                     Courses
                   </NavLink>
-                  <NavLink to="/blog" className="rounded-md px-3 py-2 ">
-                    Blog
+                  <NavLink to="/introduce" className="rounded-md px-3 py-2 ">
+                    Introduce
                   </NavLink>
                   <NavLink to="/contact" className="rounded-md px-3 py-2 ">
                     Contact

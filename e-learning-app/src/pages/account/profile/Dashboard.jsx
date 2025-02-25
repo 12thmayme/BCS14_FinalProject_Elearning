@@ -5,14 +5,14 @@ const Dashboard = () => {
   const navigation = [
     { name: "Dashboard", to: "/users/profile", icon: HomeIcon, current: false },
     {
-      name: "Purchase history",
-      to: "/users/profile/your-courses",
+      name: "Your Course",
+      to: "/users/profile/course",
       icon: FolderIcon,
       current: false,
     },
     {
       name: "Your profile",
-      to: "/users/profile/your-profile",
+      to: "/users/profile",
       icon: UsersIcon,
       current: false,
     },

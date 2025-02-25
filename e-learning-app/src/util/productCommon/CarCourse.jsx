@@ -8,7 +8,7 @@ const CarCourse = (props) => {
     <div key={course.maKhoaHoc} className="p-4">
       <div className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
         <FallbackImage
-          src={course.hinhAnh ? course.hinhAnh : "./public/fontend_image.jpeg"}
+          src={course.hinhAnh ? course.hinhAnh : "./public/front_end.jpeg"}
           alt={course.tenKhoaHoc}
           className="w-full h-48 object-cover"
         />

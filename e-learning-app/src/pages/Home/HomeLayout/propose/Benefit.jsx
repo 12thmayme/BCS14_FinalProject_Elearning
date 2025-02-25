@@ -17,7 +17,7 @@ const Benefit = () => {
     },
   ];
   return (
-    <section className=" bg-[url('/homeCyber/animou4.jpeg')] relative bg-cover bg-center min-h-[40vh] lg:h-[46.5rem] mb-20">
+    <section className=" bg-[url('/homeCyber/animou4.jpeg')] relative bg-cover bg-center min-h-[40vh] lg:h-[45rem] mb-20">
       <div className="absolute inset-0 bg-black/60 "></div>
       <div className="container">
         <div className="overflow-hidden min-h-[40vh] lg:h-[46.5rem]">
@@ -47,27 +47,27 @@ const Benefit = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-center max-w-4xl">
               {data.map((item, index) => (
-                <Animation
-                  animation={{ scale: 1, opacity: 1 }}
-                  initial={{ scale: 0.5, opacity: 0 }}
-                  transition={{ duration: 0.8 }}
-                  index={index}
-                  key={index}
-                >
-                  <div
-                    className={`bg-black/60 col-span-1 p-4 md:p-0 md:py-4 lg:p-5 lg:max-w-[300px] border-b-4 border-primary shadow-md lg:absolute
+                // <Animation
+                //   animation={{ y: 0, opacity: 1 }}
+                //   initial={{ y: 150, opacity: 0 }}
+                //   transition={{ duration: 0.8 }}
+                //   index={index}
+                //   key={index}
+                // >
+                <div
+                  className={`bg-black/60 col-span-1 p-4 md:p-0 md:py-4 lg:p-5 lg:max-w-[300px] border-b-4 border-primary shadow-md lg:absolute
                       ${index === 0 ? "top-[195px] left-[70px]" : ""}
                       ${index === 1 ? "top-[195px] right-[50px]" : ""}
                       ${index === 2 ? "lg:bottom-[-300px] left-[70px]" : ""}
                       ${index === 3 ? "lg:bottom-[-300px] right-[50px]" : ""}
           
                       `}
-                  >
-                    <p className="text-sm md:text-base  lg:text-xl">
-                      {item.desc}
-                    </p>
-                  </div>
-                </Animation>
+                >
+                  <p className="text-sm md:text-base  lg:text-xl">
+                    {item.desc}
+                  </p>
+                </div>
+                // </Animation>
               ))}
             </div>
           </div>

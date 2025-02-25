@@ -31,9 +31,20 @@ export default {
       },
       backgroundImage: {
         "detail-course": "url('/learning-path-detail-background.png')",
+        "gradient-custom": "linear-gradient(to right, #ff3300, #ffcc00)",
         bannerEvaluate: 'url("/banner_evaluate.avif")',
         bannerLogin: 'url("/banner.evaluate3.avif")',
         bannerHome: 'url("/bannerelearning.webp")',
+      },
+
+      keyframes: {
+        marquee: {
+          from: { transform: "translateX(0%)" },
+          to: { transform: "translateX(-50%)" },
+        },
+      },
+      animation: {
+        marquee: "marquee 25s linear infinite",
       },
     },
   },

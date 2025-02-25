@@ -28,7 +28,6 @@ import Detail from "./pages/detail/Detail";
 import HomePage from "./pages/Home/HomePage";
 import HomeMaster from "./pages/pageMaster/HomeMaster";
 import UserMaster from "./pages/pageMaster/UserMaster";
-import Profiles from "./pages/user/Profile";
 
 // Shared Components
 import Auth from "./components/Auth";
@@ -37,6 +36,10 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./main.js";
 import "./sass/main.scss";
+import YourProfile from "./pages/account/profile/YourProfile.jsx";
+import YourCourse from "./pages/account/profile/YourCourse.jsx";
+import Blog from "./pages/blog/Blog.jsx";
+import Introduce from "./pages/introduce/Introduce.jsx";
 
 const queryClient = new QueryClient();
 
@@ -62,6 +65,8 @@ function App() {
             <Route path="course" element={<Course />} />
             <Route path="course-catalog" element={<CourseCatalog />} />
             <Route path="contact" element={<Contact />} />
+            <Route path="blog" element={<Blog />} />
+            <Route path="introduce" element={<Introduce />} />
             <Route path="detail/:productID" element={<Detail />} />
           </Route>
 
@@ -72,9 +77,9 @@ function App() {
               <Route path="sign-up" element={<Signup />}></Route>
             </Route>
             <Route path="profile" element={<Profile />}>
-              <Route path="" element={<FromProfile />}></Route>
+              <Route path="" element={<YourProfile />}></Route>
+              <Route path="course" element={<YourCourse />}></Route>
             </Route>
-            <Route path="profile-s" element={<Profiles />}></Route>
           </Route>
 
           {/* Admin Routes */}

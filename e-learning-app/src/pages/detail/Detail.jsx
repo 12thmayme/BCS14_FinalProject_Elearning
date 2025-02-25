@@ -1,20 +1,25 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React from "react";
+import { CiShare2 } from "react-icons/ci";
+import { FaArrowLeftLong, FaRegCircleCheck } from "react-icons/fa6";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import CustomsIsPending from "../../util/customs/CustomsIsPending";
-import {
-  showErrorToast,
-  showSuccessToast,
-} from "../../util/customs/CustomAlert";
+import { localService } from "../../api/localService";
 import {
   getDetailCourse,
   registerCourse,
 } from "../../util/API/Product/ProductAPI";
-import { FaArrowLeftLong } from "react-icons/fa6";
-import FallbackImage from "../Home/HomeLayout/CourseList/FallbackImage";
+import {
+  showErrorToast,
+  showSuccessToast,
+} from "../../util/customs/CustomAlert";
 import Avatar from "../../util/customs/CustomAvatar";
-import { CiShare2 } from "react-icons/ci";
-import { localService } from "../../api/localService";
+import CustomsIsPending from "../../util/customs/CustomsIsPending";
+import Certification from "../blog/Certification";
+import FallbackImage from "../Home/HomeLayout/CourseList/FallbackImage";
+import Faq from "../blog/Faq";
+import Curriculum from "../blog/Curriculum";
+import Lecturer from "../blog/Lecturer";
+import Auto from "../Home/auto";
 const Detail = () => {
   const navigate = useNavigate();
   const param = useParams();
@@ -61,6 +66,33 @@ const Detail = () => {
       button.style.display = "block";
     }
   });
+
+  const whatLearn = [
+    {
+      desc: "The lectures are designed in a hands-on format, so students can practice and apply them immediately to their work.",
+    },
+    {
+      desc: "The course is like a reference book of tricks, making it easy for you to review and use when needed.",
+    },
+    { desc: "Can be applied immediately to work" },
+    { desc: "Master the tricks and solutions to problems encountered in work" },
+  ];
+  const whoParticipates = [
+    {
+      desc: "New to programming, lack of direction and learning path",
+    },
+    {
+      desc: "Changed major to study programming, changed career",
+    },
+    { desc: "Completed high school program (12/12)" },
+    {
+      desc: "Weak programming thinking, no foundation, want to learn to get a job",
+    },
+    {
+      desc: "Project owners want to manage dev team, startups want to understand dev work",
+    },
+    { desc: "Add a job to earn extra income in your spare time" },
+  ];
 
   return (
     <>
@@ -130,7 +162,47 @@ const Detail = () => {
             </div>
           </div>
         </div>
+
+        <div className="container">
+          <div className="lg:flex mt-10 lg:mt-10">
+            <div className="lg:w-[40%]">
+              <h2>Who can participates?</h2>
+              <div>
+                {whoParticipates.map((item, index) => {
+                  return (
+                    <div className="flex p-2 items-center" key={index}>
+                      <FaRegCircleCheck className="w-[10%] text-center text-xl lg:text-3xl text-primary" />
+                      <p className="w-[90%] text-left pl-1 lg:text-lg max-w-[320px]  md:max-w-[450px]">
+                        {item.desc}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="mt-5 lg:mt-0 lg:ml-10 lg:w-[60%]">
+              <h2>What you will learn?</h2>
+              <div>
+                {whatLearn.map((item, index) => {
+                  return (
+                    <div className="flex p-2 items-center" key={index}>
+                      <FaRegCircleCheck className="w-[10%] text-center text-xl lg:text-3xl text-primary" />
+                      <p className="w-[90%] text-left pl-1 lg:text-lg max-w-[320px] md:max-w-[650px]">
+                        {item.desc}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
+      <Curriculum />
+      <Lecturer />
+      <Auto />
+      <Certification />
+      <Faq />
     </>
   );
 };

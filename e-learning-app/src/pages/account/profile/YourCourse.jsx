@@ -1,5 +1,10 @@
-import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
-import React from "react";
+import {
+  useMutation,
+  useQueries,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import React, { useMemo } from "react";
 import { FaRegEye, FaRegTrashCan } from "react-icons/fa6";
 import { localService } from "../../../api/localService";
 import {
@@ -12,14 +17,24 @@ import {
 } from "../../../util/customs/CustomAlert";
 import CustomsIsPending from "../../../util/customs/CustomsIsPending";
 import { NavLink, useNavigate } from "react-router-dom";
+import { getInfo } from "../../../util/API/User/UserApi";
 
-const YourCourse = (props) => {
-  const navigate = useNavigate();
-  const { chiTietKhoaHocGhiDanh } = props.data;
+const YourCourse = () => {
   const queryClient = useQueryClient();
 
-  // Đảm bảo danh sách mã khóa học được cập nhật sau invalidate
-  const codeCourseList = chiTietKhoaHocGhiDanh?.map((item) => item.maKhoaHoc);
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["getInfo"],
+    queryFn: getInfo,
+    staleTime: 0,
+  });
+
+  if (isLoading) return <CustomsIsPending />;
+  if (error) return <div className="alert alert-danger">{error.message}</div>;
+
+  const codeCourseList = useMemo(
+    () => data?.chiTietKhoaHocGhiDanh?.map((item) => item.maKhoaHoc) || [],
+    [data]
+  );
 
   const courseQueries = useQueries({
     queries: codeCourseList.map((maKhoaHoc) => ({
@@ -32,24 +47,25 @@ const YourCourse = (props) => {
   const mutation = useMutation({
     mutationFn: (values) => cancelCourse(values),
     onSuccess: (_, variables) => {
-      showSuccessToast("Course canceled successfully!");
+      showSuccessToast("Cancel course successfully!");
+      queryClient.invalidateQueries(["getInfo"]);
     },
     onError: (err) => {
-      showErrorToast({ error: err.message });
+      showErrorToast(err.message || "Cancel course failed!");
     },
   });
 
   const isPending = courseQueries.some((query) => query.isLoading);
   const hasError = courseQueries.some((query) => query.error);
 
-  if (isPending) {
-    return <CustomsIsPending />;
-  }
-
+  if (isPending) return <CustomsIsPending />;
   if (hasError) {
-    const error = courseQueries.find((query) => query.error)?.error;
-    console.log(error);
-    return showErrorToast({ error });
+    return (
+      <div className="alert alert-danger">
+        {courseQueries.find((query) => query.error)?.error.message ||
+          "Error loading course datac!"}
+      </div>
+    );
   }
 
   const user = localService.getUser();
@@ -62,45 +78,52 @@ const YourCourse = (props) => {
   };
 
   return (
-    <div className="mt-10">
-      <h2>
+    <div className="mx-auto md:mt-5 w-[100%] ">
+      <h2 className="pb-3 lg:pb-5">
         Your <span>Courses</span>
       </h2>
-      <table width="100%">
-        <thead>
-          <tr className="text-sm">
-            <th className={styles.th}>#</th>
-            <th className={styles.th}>Course Name</th>
-            <th className={styles.th}>Course ID</th>
-            <th className={styles.th}>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {courseQueries.map((result, index) => (
-            <tr key={codeCourseList[index]} className={styles.tr}>
-              <td className={styles.td}>{index + 1}</td>
-              <td className={styles.td}>{result.data?.tenKhoaHoc || "N/A"}</td>
-              <td className={styles.td}>{result.data?.maKhoaHoc || "N/A"}</td>
-              <td className="text-sm md:text-base lg:text-lg flex justify-center items-center border-b-2 py-2">
-                <NavLink
-                  to={`/detail/${result.data?.maKhoaHoc}`}
-                  className={styles.button}
-                >
-                  <FaRegEye />
-                </NavLink>
-                <button
-                  className={styles.buttonDelete}
-                  onClick={() => {
-                    handleCancelCourse(result.data?.maKhoaHoc);
-                  }}
-                >
-                  <FaRegTrashCan />
-                </button>
-              </td>
+
+      {codeCourseList.length === 0 ? (
+        <p className="text-center text-gray-500 mt-2 md:mt-5 lg:text-xl">
+          You have not registered for any course...
+        </p>
+      ) : (
+        <table className="w-full lg:w-[90%] mx-auto">
+          <thead>
+            <tr className="text-sm">
+              <th className={styles.th}>#</th>
+              <th className={styles.th}>Course Name</th>
+              <th className={styles.th}>Course ID</th>
+              <th className={styles.th}>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {courseQueries.map((result, index) => (
+              <tr key={codeCourseList[index]} className={styles.tr}>
+                <td className={styles.td}>{index + 1}</td>
+                <td className={styles.td}>
+                  {result.data?.tenKhoaHoc || "N/A"}
+                </td>
+                <td className={styles.td}>{result.data?.maKhoaHoc || "N/A"}</td>
+                <td className="text-sm md:text-base lg:text-lg flex justify-center items-center border-b-2 py-2">
+                  <NavLink
+                    to={`/detail/${result.data?.maKhoaHoc}`}
+                    className={styles.button}
+                  >
+                    <FaRegEye />
+                  </NavLink>
+                  <button
+                    className={styles.buttonDelete}
+                    onClick={() => handleCancelCourse(result.data?.maKhoaHoc)}
+                  >
+                    <FaRegTrashCan />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

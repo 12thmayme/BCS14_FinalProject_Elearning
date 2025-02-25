@@ -1,33 +1,39 @@
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { signupValidationSchema } from "../../../util/schemaValidation/SchemaVatidation";
 import { FaEyeSlash, FaRegEye } from "react-icons/fa";
-import { useMutation } from "@tanstack/react-query";
-import { updateUser } from "../../../util/API/User/UserApi";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getInfo, updateUser } from "../../../util/API/User/UserApi";
 import {
   showErrorToast,
   showSuccessToast,
 } from "../../../util/customs/CustomAlert";
 import { useNavigate } from "react-router-dom";
-const YourProfile = (props) => {
-  const navigate = useNavigate();
-  const { data } = props;
+import CustomsIsPending from "../../../util/customs/CustomsIsPending";
+
+const YourProfile = () => {
+  const [isEdited, setIsEdited] = useState(false);
+  // const { data } = props;
   const [showPassword, setShowPassword] = useState(false);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+  const { data, error, isLoading, refetch } = useQuery({
+    queryKey: ["getInfo"],
+    queryFn: getInfo,
+    staleTime: 0,
+  });
+
   const mutation = useMutation({
     mutationKey: ["updateUser"],
     mutationFn: updateUser,
     onSuccess: () => {
       showSuccessToast("Update successful");
-      navigate("/");
+      refetch();
     },
     onError: (error) => {
       showErrorToast(error.response?.data || "Update failed");
     },
   });
+
   const formik = useFormik({
     initialValues: {
       taiKhoan: data?.taiKhoan || "",
@@ -44,6 +50,35 @@ const YourProfile = (props) => {
       await mutation.mutateAsync(values);
     },
   });
+
+  useEffect(() => {
+    if (data) {
+      setIsEdited(
+        JSON.stringify(formik.values) !==
+          JSON.stringify({
+            taiKhoan: data.taiKhoan,
+            matKhau: data.matKhau,
+            hoTen: data.hoTen,
+            soDT: data.soDT,
+            maLoaiNguoiDung: "HV",
+            maNhom: data.maNhom || "GP01",
+            email: data.email,
+          })
+      );
+    }
+  }, [formik.values, data]);
+
+  if (isLoading) {
+    return <CustomsIsPending />;
+  }
+  if (error) {
+    return <div className="alert alert-danger">{error.message}</div>;
+  }
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const fromProfile = [
     { title: "Account", type: "text", name: "taiKhoan", id: "taiKhoan" },
     { title: "Password", type: "password", name: "matKhau", id: "matKhau" },
@@ -115,13 +150,15 @@ const YourProfile = (props) => {
               </li>
             ))}
           </ul>
-          <button
-            type="submit"
-            className="py-3 px-10 mt-10 bg-blue-500 text-white"
-            disabled={mutation.isLoading}
-          >
-            {mutation.isLoading ? "Updating..." : "Save"}
-          </button>
+          {isEdited && (
+            <button
+              type="submit"
+              className="py-3 px-10 mt-10 bg-blue-500 text-white"
+              disabled={mutation.isLoading}
+            >
+              {mutation.isLoading ? "Updating..." : "Save"}
+            </button>
+          )}
         </form>
       </div>
     </div>

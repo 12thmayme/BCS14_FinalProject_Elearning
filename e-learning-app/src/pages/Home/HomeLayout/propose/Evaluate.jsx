@@ -80,7 +80,7 @@ const Evaluate = () => {
         <div className="absolute left-0 top-0 w-full h-full bg-black opacity-60 "></div>
         <div className="container">
           <div className="text-center my-auto pt-10 md:pt-20 lg:pt-40">
-            <h2 className="text-white text-xl font-semibold md:text-3xl lg:text-6xl">
+            <h2 className="w-full text-white text-xl font-semibold md:text-3xl lg:text-6xl absolute top-[50%] right-[50%] translate-x-1/2 -translate-y-[9rem] md:-translate-y-[14rem] ">
               What students say about CyberSoft
             </h2>
             <div className="mx-auto w-3/4 md:w-2/3 mt-10">
